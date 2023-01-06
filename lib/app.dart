@@ -7,8 +7,9 @@ class FrontendMentorRockPaperScissorsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'RockPaperScissorsGame',
       theme: ThemeData(
+        fontFamily: 'Barlow Semi Condensed',
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(),
