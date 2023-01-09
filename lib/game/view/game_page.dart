@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend_mentor_rock_paper_scissors/game/game.dart';
+import 'package:frontend_mentor_rock_paper_scissors/score/cubit/score_cubit.dart';
 
 class GamePage extends StatelessWidget {
   const GamePage({super.key});
@@ -8,9 +9,18 @@ class GamePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider(
-        create: (context) => GameBloc(),
-        child: const GameView(),
+      body: SafeArea(
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => GameBloc(),
+            ),
+            BlocProvider(
+              create: (context) => ScoreCubit(),
+            ),
+          ],
+          child: const GameView(),
+        ),
       ),
     );
   }
