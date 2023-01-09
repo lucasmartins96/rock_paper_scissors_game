@@ -10,15 +10,34 @@ class GameScore extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: ColorsConstants.headerOutline,
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16,
       ),
       child: BlocConsumer<ScoreCubit, int>(
         listener: (context, state) {},
         builder: (context, score) {
           return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('score'),
-              Text('$score'),
+              const Text(
+                'SCORE',
+                style: TextStyle(
+                  color: ColorsConstants.scoreText,
+                  fontSize: 12,
+                  letterSpacing: 1,
+                ),
+              ),
+              Text(
+                '$score',
+                style: const TextStyle(
+                  color: ColorsConstants.darkText,
+                  fontSize: 40,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
             ],
           );
         },
