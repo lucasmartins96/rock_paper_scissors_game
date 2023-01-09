@@ -10,7 +10,7 @@ class GamePage extends StatelessWidget {
     return Scaffold(
       body: BlocProvider(
         create: (context) => GameBloc(),
-        child: const GameHome(),
+        child: const GameView(),
       ),
     );
   }
