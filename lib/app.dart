@@ -12,6 +12,7 @@ class FrontendMentorRockPaperScissorsApp extends StatelessWidget {
         fontFamily: 'Barlow Semi Condensed',
         primarySwatch: Colors.blue,
       ),
+      debugShowCheckedModeBanner: false,
       home: const GamePage(),
     );
   }
