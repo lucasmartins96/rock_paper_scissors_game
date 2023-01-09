@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:frontend_mentor_rock_paper_scissors/config/colors_constants.dart';
+import 'package:frontend_mentor_rock_paper_scissors/config/images_contants.dart';
 import 'package:frontend_mentor_rock_paper_scissors/game/game.dart';
+import 'package:frontend_mentor_rock_paper_scissors/score/score.dart';
 
 class GameView extends StatefulWidget {
   const GameView({super.key});
@@ -25,15 +28,45 @@ class _GameViewState extends State<GameView> {
           ],
         ),
       ),
-      child: Column(
-        children: [
-          // TODO: Inserir componente de score
-          _handlePageSteps(),
-          OutlinedButton(
-            onPressed: () {},
-            child: Text('RULES'),
+      child: Padding(
+        padding: const EdgeInsets.only(
+          top: 16,
+          left: 16,
+          right: 16,
+        ),
+        child: Column(
+          children: [
+            _buildHeader(),
+            _handlePageSteps(),
+            OutlinedButton(
+              onPressed: () {},
+              child: const Text('RULES'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return SizedBox(
+      height: 100,
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: ColorsConstants.headerOutline,
+            width: 4,
           ),
-        ],
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(child: SvgPicture.asset(ImagesConstants.logo)),
+            const GameScore(),
+          ],
+        ),
       ),
     );
   }
