@@ -14,15 +14,27 @@ class GameView extends StatefulWidget {
 class _GameViewState extends State<GameView> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // TODO: Inserir componente de score
-        _handlePageSteps(),
-        OutlinedButton(
-          onPressed: () {},
-          child: Text('RULES'),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            ColorsConstants().gradient.background.color.shade800,
+            ColorsConstants().gradient.background.color.shade900,
+          ],
         ),
-      ],
+      ),
+      child: Column(
+        children: [
+          // TODO: Inserir componente de score
+          _handlePageSteps(),
+          OutlinedButton(
+            onPressed: () {},
+            child: Text('RULES'),
+          ),
+        ],
+      ),
     );
   }
 
