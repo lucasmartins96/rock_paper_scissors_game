@@ -38,10 +38,7 @@ class _GameViewState extends State<GameView> {
           children: [
             _buildHeader(),
             _handlePageSteps(),
-            OutlinedButton(
-              onPressed: () {},
-              child: const Text('RULES'),
-            ),
+            _buildRulesButton(),
           ],
         ),
       ),
@@ -90,6 +87,29 @@ class _GameViewState extends State<GameView> {
         GamePick(key: Key('player_game_pick_rock')),
         GamePick(key: Key('player_game_pick_scissor')),
       ],
+    );
+  }
+
+  Widget _buildRulesButton() {
+    return OutlinedButton(
+      onPressed: () {},
+      style: OutlinedButton.styleFrom(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+        ),
+        side: const BorderSide(width: 1.5, color: Colors.white),
+      ),
+      child: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: Text(
+          'RULES',
+          style: TextStyle(
+            fontSize: 16,
+            letterSpacing: 1,
+            color: Colors.white,
+          ),
+        ),
+      ),
     );
   }
 }
