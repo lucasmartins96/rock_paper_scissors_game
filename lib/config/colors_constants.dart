@@ -15,7 +15,7 @@ class GradientColors {
 }
 
 class BackgroundColors {
-  static final Map<int, Color> _shades = {
+  final Map<int, Color> _shades = {
     800: const Color(0xFF1F3756),
     900: const Color(0xFF141539),
   };
@@ -24,7 +24,7 @@ class BackgroundColors {
 }
 
 class ScissorsColors {
-  static final Map<int, Color> _shades = {
+  final Map<int, Color> _shades = {
     400: const Color(0xFFECA922),
     500: const Color(0xFFEC9E0E),
   };
@@ -33,7 +33,7 @@ class ScissorsColors {
 }
 
 class PaperColors {
-  static final Map<int, Color> _shades = {
+  final Map<int, Color> _shades = {
     300: const Color(0xFF5671F5),
     400: const Color(0xFF4865F4),
   };
@@ -42,7 +42,7 @@ class PaperColors {
 }
 
 class RockColors {
-  static final Map<int, Color> _shades = {
+  final Map<int, Color> _shades = {
     400: const Color(0xFFDD405D),
     500: const Color(0xFFDC2E4E),
   };
