@@ -82,12 +82,53 @@ class _GameViewState extends State<GameView> {
   }
 
   Widget _buildGamePicks() {
-    return Column(
-      children: [
-        GamePick(key: Key('player_game_pick_paper')),
-        GamePick(key: Key('player_game_pick_rock')),
-        GamePick(key: Key('player_game_pick_scissor')),
-      ],
+    return SizedBox(
+      width: 300,
+      height: 300,
+      child: Stack(
+        children: [
+          Align(
+            child: SizedBox(
+              width: 200,
+              height: 200,
+              child: SvgPicture.asset(ImagesConstants.bgTriangle),
+            ),
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: GamePickButton(
+              key: const Key('player_game_pick_paper'),
+              pickImagePath: ImagesConstants.icons.paper,
+              gradientFirstColor: ColorsConstants.gradient.paper.color.shade300,
+              gradientSecondColor:
+                  ColorsConstants.gradient.paper.color.shade400,
+              action: () {},
+            ),
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: GamePickButton(
+              key: const Key('player_game_pick_scissor'),
+              pickImagePath: ImagesConstants.icons.scissor,
+              gradientFirstColor:
+                  ColorsConstants.gradient.scissors.color.shade400,
+              gradientSecondColor:
+                  ColorsConstants.gradient.scissors.color.shade500,
+              action: () {},
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: GamePickButton(
+              key: const Key('player_game_pick_rock'),
+              pickImagePath: ImagesConstants.icons.rock,
+              gradientFirstColor: ColorsConstants.gradient.rock.color.shade400,
+              gradientSecondColor: ColorsConstants.gradient.rock.color.shade500,
+              action: () {},
+            ),
+          ),
+        ],
+      ),
     );
   }
 
