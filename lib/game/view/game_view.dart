@@ -35,6 +35,7 @@ class _GameViewState extends State<GameView> {
           right: 16,
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _buildHeader(),
             _handlePageSteps(),
