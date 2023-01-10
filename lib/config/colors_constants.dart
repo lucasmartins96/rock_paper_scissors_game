@@ -20,7 +20,7 @@ class BackgroundColors {
     900: const Color(0xFF141539),
   };
 
-  static final customColor = MaterialColor(0xFFECA922, _shades);
+  MaterialColor get color => MaterialColor(0xFFECA922, _shades);
 }
 
 class ScissorsColors {
@@ -29,7 +29,7 @@ class ScissorsColors {
     500: const Color(0xFFEC9E0E),
   };
 
-  static final customColor = MaterialColor(0xFFECA922, _shades);
+  MaterialColor get color => MaterialColor(0xFFECA922, _shades);
 }
 
 class PaperColors {
@@ -38,7 +38,7 @@ class PaperColors {
     400: const Color(0xFF4865F4),
   };
 
-  static final customColor = MaterialColor(0xFFECA922, _shades);
+  MaterialColor get color => MaterialColor(0xFFECA922, _shades);
 }
 
 class RockColors {
@@ -47,5 +47,5 @@ class RockColors {
     500: const Color(0xFFDC2E4E),
   };
 
-  static final customColor = MaterialColor(0xFFECA922, _shades);
+  MaterialColor get color => MaterialColor(0xFFECA922, _shades);
 }
