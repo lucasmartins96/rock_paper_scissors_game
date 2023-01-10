@@ -49,11 +49,13 @@ void main() {
       when(() => scoreCubit.state).thenReturn(0);
       await pumpGameView(tester);
       final rulesButton = find.widgetWithText(OutlinedButton, 'RULES');
+      final gameScore = find.widgetWithText(GameScore, '0');
 
       expect(find.byKey(gamePickButtonPaper), findsOneWidget);
       expect(find.byKey(gamePickButtonRock), findsOneWidget);
       expect(find.byKey(gamePickButtonScissor), findsOneWidget);
       expect(rulesButton, findsOneWidget);
+      expect(gameScore, findsOneWidget);
     });
   });
 }
