@@ -7,7 +7,8 @@ class ImagesConstants {
 }
 
 class Icons {
-  static const close = 'lib/assets/images/icon-close.svg';
-  static const paper = 'lib/assets/images/icon-paper.svg';
-  static const rock = 'lib/assets/images/icon-rock.svg';
+  String get close => 'lib/assets/images/icon-close.svg';
+  String get paper => 'lib/assets/images/icon-paper.svg';
+  String get rock => 'lib/assets/images/icon-rock.svg';
+  String get scissor => 'lib/assets/images/icon-scissors.svg';
 }
