@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:frontend_mentor_rock_paper_scissors/config/colors_constants.dart';
-import 'package:frontend_mentor_rock_paper_scissors/config/images_contants.dart';
+import 'package:frontend_mentor_rock_paper_scissors/config/images_constants.dart';
 import 'package:frontend_mentor_rock_paper_scissors/game/game.dart';
 import 'package:frontend_mentor_rock_paper_scissors/score/score.dart';
 
