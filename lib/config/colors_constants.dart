@@ -8,10 +8,10 @@ class ColorsConstants {
 }
 
 class GradientColors {
-  static final background = BackgroundColors();
-  static final scissors = ScissorsColors();
-  static final paper = PaperColors();
-  static final rock = RockColors();
+  BackgroundColors get background => BackgroundColors();
+  ScissorsColors get scissors => ScissorsColors();
+  PaperColors get paper => PaperColors();
+  RockColors get rock => RockColors();
 }
 
 class BackgroundColors {
