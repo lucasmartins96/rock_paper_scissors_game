@@ -23,8 +23,8 @@ class _GameViewState extends State<GameView> {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            ColorsConstants().gradient.background.color.shade800,
-            ColorsConstants().gradient.background.color.shade900,
+            ColorsConstants.gradient.background.color.shade800,
+            ColorsConstants.gradient.background.color.shade900,
           ],
         ),
       ),
