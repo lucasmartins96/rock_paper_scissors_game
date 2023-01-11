@@ -1,5 +1,6 @@
 class ImagesConstants {
   static const rules = 'lib/assets/images/image-rules.svg';
+  static const rules2 = 'lib/assets/images/image-rules.png';
   static const bgPentagon = 'lib/assets/images/bg-pentagon.svg';
   static const bgTriangle = 'lib/assets/images/bg-triangle.svg';
   static const logo = 'lib/assets/images/logo.svg';
