@@ -4,7 +4,9 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:frontend_mentor_rock_paper_scissors/config/colors_constants.dart';
 import 'package:frontend_mentor_rock_paper_scissors/config/images_constants.dart';
+import 'package:frontend_mentor_rock_paper_scissors/config/widget_keys_constants.dart';
 import 'package:frontend_mentor_rock_paper_scissors/game/game.dart';
+import 'package:frontend_mentor_rock_paper_scissors/game/widgets/rules_modal.dart';
 import 'package:frontend_mentor_rock_paper_scissors/score/score.dart';
 
 class GameView extends StatefulWidget {
@@ -134,7 +136,15 @@ class _GameViewState extends State<GameView> {
 
   Widget _buildRulesButton() {
     return OutlinedButton(
-      onPressed: () {},
+      onPressed: () {
+        showModalBottomSheet<void>(
+          context: context,
+          isScrollControlled: true,
+          builder: (_) => const RulesModal(
+            key: WidgetKeysConstants.rulesModal,
+          ),
+        );
+      },
       style: OutlinedButton.styleFrom(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(8)),
