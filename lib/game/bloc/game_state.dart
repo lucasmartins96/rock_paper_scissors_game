@@ -20,32 +20,28 @@ enum PlayerGamePick {
 abstract class GameState extends Equatable {
   const GameState(this.playerGamePick);
 
-  final PlayerGamePick? playerGamePick;
+  final GamePick? playerGamePick;
 
   @override
   List<Object?> get props => [playerGamePick];
 }
 
 class GameInitialState extends GameState {
-  const GameInitialState() : super(null);
+  const GameInitialState(this.gameInitialPicks) : super(null);
+
+  final List<GamePick> gameInitialPicks;
 }
 
 class UserPickState extends GameState {
-  const UserPickState(this.playerPick) : super(playerPick);
-
-  final PlayerGamePick playerPick;
+  const UserPickState(super.playerGamePick);
 }
 
 class HomePickState extends GameState {
-  const HomePickState(this.playerPick) : super(playerPick);
-
-  final PlayerGamePick playerPick;
+  const HomePickState(super.playerGamePick);
 }
 
 class GameFinishState extends GameState {
-  const GameFinishState(this.winnerPick) : super(winnerPick);
-
-  final PlayerGamePick winnerPick;
+  const GameFinishState(super.playerGamePick);
 }
 
 // class GameHousePicked extends GameState {}
