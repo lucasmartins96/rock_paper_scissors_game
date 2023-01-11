@@ -8,13 +8,13 @@ class GameStartedEvent extends GameEvent {}
 class GameUserPickedEvent extends GameEvent {
   GameUserPickedEvent(this.userPick);
 
-  final PlayerGamePick userPick;
+  final GamePick userPick;
 }
 
 class GameHomePickedEvent extends GameEvent {
   GameHomePickedEvent(this.userPick);
 
-  final PlayerGamePick userPick;
+  final GamePick userPick;
 }
 
 class GameFinishedEvent extends GameEvent {
@@ -23,6 +23,6 @@ class GameFinishedEvent extends GameEvent {
     required this.homePick,
   });
 
-  final PlayerGamePick userPick;
-  final PlayerGamePick homePick;
+  final GamePick userPick;
+  final GamePick homePick;
 }
