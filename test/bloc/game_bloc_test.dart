@@ -27,14 +27,14 @@ void main() {
 
   group('GameBloc', () {
     test('initial state is GameInitialState', () {
-      expect(GameBloc().state, const GameInitialState());
+      expect(GameBloc().state, const GameInitialState(mockPicks));
     });
 
     blocTest<GameBloc, GameState>(
       'emits [GameInitialState] after dispatch GameStartedEvent',
       build: GameBloc.new,
       act: (bloc) => bloc.add(GameStartedEvent()),
-      expect: () => [const GameInitialState()],
+      expect: () => [const GameInitialState(mockPicks)],
     );
 
     blocTest<GameBloc, GameState>(
