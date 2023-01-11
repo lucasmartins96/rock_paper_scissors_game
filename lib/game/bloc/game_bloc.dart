@@ -7,7 +7,7 @@ part 'game_event.dart';
 part 'game_state.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
-  GameBloc() : super(const GameInitialState()) {
+  GameBloc() : super(GameInitialState(gameInitialPicks)) {
     on<GameStartedEvent>(_onStarted);
     on<GameUserPickedEvent>(_onUserPick);
     on<GameHomePickedEvent>(_onHomePick);
@@ -38,7 +38,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   ];
 
   void _onStarted(GameStartedEvent event, Emitter<GameState> emit) {
-    emit(const GameInitialState());
+    emit(GameInitialState(gameInitialPicks));
   }
 
   void _onUserPick(GameUserPickedEvent event, Emitter<GameState> emit) {
