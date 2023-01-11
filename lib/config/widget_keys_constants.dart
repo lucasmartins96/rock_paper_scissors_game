@@ -5,4 +5,5 @@ class WidgetKeysConstants {
   static const gamePickRockButton = Key('player_game_pick_rock');
   static const gamePickRockScissor = Key('player_game_pick_scissor');
   static const rulesModal = Key('rules_modal');
+  static const closeRulesModal = Key('close_rules_modal');
 }
