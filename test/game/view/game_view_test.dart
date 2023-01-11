@@ -15,9 +15,9 @@ class MockGameBloc extends MockBloc<GameEvent, GameState> implements GameBloc {}
 class MockScoreCubit extends MockCubit<int> implements ScoreCubit {}
 
 void main() {
-  const gamePickButtonPaper = Key('player_game_pick_paper');
-  const gamePickButtonRock = Key('player_game_pick_rock');
-  const gamePickButtonScissor = Key('player_game_pick_scissor');
+  const gamePickButtonPaper = WidgetKeysConstants.gamePickPaperButton;
+  const gamePickButtonRock = WidgetKeysConstants.gamePickRockButton;
+  const gamePickButtonScissor = WidgetKeysConstants.gamePickRockScissor;
   late GameBloc gameBloc;
   late ScoreCubit scoreCubit;
 
