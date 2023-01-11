@@ -56,11 +56,11 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     emit(HomePickState(homePick));
   }
 
-  PlayerGamePick _getHomeGamePick() {
+  GamePick _getHomeGamePick() {
     const picks = 3;
     const maxRange = 10;
     final randomNumber = Random().nextInt(maxRange) % picks;
-    return PlayerGamePick.getByCode(randomNumber);
+    return gameInitialPicks.elementAt(randomNumber);
   }
 
   void _onFinished(GameFinishedEvent event, Emitter<GameState> emit) {
