@@ -1,11 +1,30 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:frontend_mentor_rock_paper_scissors/game/game.dart';
+import 'package:frontend_mentor_rock_paper_scissors/game/models/game_pick.dart';
 
 void main() {
-  const paperPlayerPick = PlayerGamePick.paper;
-  const rockPlayerPick = PlayerGamePick.rock;
-  const scissorPlayerPick = PlayerGamePick.scissor;
+  const paperPlayerPick = GamePick(
+    name: PlayerGamePick.paper,
+    iconPath: '',
+    gradientBorderFirstColor: Colors.black,
+    gradientBorderSecondColor: Colors.white,
+  );
+  const rockPlayerPick = GamePick(
+    name: PlayerGamePick.rock,
+    iconPath: '',
+    gradientBorderFirstColor: Colors.black,
+    gradientBorderSecondColor: Colors.white,
+  );
+  const scissorPlayerPick = GamePick(
+    name: PlayerGamePick.scissor,
+    iconPath: '',
+    gradientBorderFirstColor: Colors.black,
+    gradientBorderSecondColor: Colors.white,
+  );
+  const mockPicks = [paperPlayerPick, rockPlayerPick, scissorPlayerPick];
+
   group('GameBloc', () {
     test('initial state is GameInitialState', () {
       expect(GameBloc().state, const GameInitialState());
