@@ -14,6 +14,29 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     on<GameFinishedEvent>(_onFinished);
   }
 
+  static final List<GamePick> gameInitialPicks = [
+    GamePick(
+      name: PlayerGamePick.paper,
+      iconPath: ImagesConstants.icons.paper,
+      gradientBorderFirstColor: ColorsConstants.gradient.paper.color.shade300,
+      gradientBorderSecondColor: ColorsConstants.gradient.paper.color.shade400,
+    ),
+    GamePick(
+      name: PlayerGamePick.scissor,
+      iconPath: ImagesConstants.icons.scissor,
+      gradientBorderFirstColor:
+          ColorsConstants.gradient.scissors.color.shade400,
+      gradientBorderSecondColor:
+          ColorsConstants.gradient.scissors.color.shade500,
+    ),
+    GamePick(
+      name: PlayerGamePick.rock,
+      iconPath: ImagesConstants.icons.rock,
+      gradientBorderFirstColor: ColorsConstants.gradient.rock.color.shade400,
+      gradientBorderSecondColor: ColorsConstants.gradient.rock.color.shade500,
+    ),
+  ];
+
   void _onStarted(GameStartedEvent event, Emitter<GameState> emit) {
     emit(const GameInitialState());
   }
