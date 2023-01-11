@@ -4,9 +4,11 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:frontend_mentor_rock_paper_scissors/config/colors_constants.dart';
 import 'package:frontend_mentor_rock_paper_scissors/config/images_constants.dart';
 import 'package:frontend_mentor_rock_paper_scissors/config/widget_keys_constants.dart';
 import 'package:frontend_mentor_rock_paper_scissors/game/game.dart';
+import 'package:frontend_mentor_rock_paper_scissors/game/models/game_pick.dart';
 import 'package:frontend_mentor_rock_paper_scissors/score/score.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -17,7 +19,26 @@ class MockScoreCubit extends MockCubit<int> implements ScoreCubit {}
 void main() {
   const gamePickButtonPaper = WidgetKeysConstants.gamePickPaperButton;
   const gamePickButtonRock = WidgetKeysConstants.gamePickRockButton;
-  const gamePickButtonScissor = WidgetKeysConstants.gamePickRockScissor;
+  const gamePickButtonScissor = WidgetKeysConstants.gamePickScissorButton;
+  final paperPlayerPick = GamePick(
+    name: PlayerGamePick.paper,
+    iconPath: ImagesConstants.icons.paper,
+    gradientBorderFirstColor: ColorsConstants.gradient.paper.color.shade300,
+    gradientBorderSecondColor: ColorsConstants.gradient.paper.color.shade400,
+  );
+  final rockPlayerPick = GamePick(
+    name: PlayerGamePick.rock,
+    iconPath: ImagesConstants.icons.rock,
+    gradientBorderFirstColor: ColorsConstants.gradient.rock.color.shade400,
+    gradientBorderSecondColor: ColorsConstants.gradient.rock.color.shade500,
+  );
+  final scissorPlayerPick = GamePick(
+    name: PlayerGamePick.scissor,
+    iconPath: ImagesConstants.icons.scissor,
+    gradientBorderFirstColor: ColorsConstants.gradient.scissors.color.shade400,
+    gradientBorderSecondColor: ColorsConstants.gradient.scissors.color.shade500,
+  );
+  final mockPicks = [paperPlayerPick, rockPlayerPick, scissorPlayerPick];
   late GameBloc gameBloc;
   late ScoreCubit scoreCubit;
 
@@ -49,7 +70,7 @@ void main() {
 
   group('GameView', () {
     testWidgets('renders initial Game view', (tester) async {
-      when(() => gameBloc.state).thenReturn(const GameInitialState());
+      when(() => gameBloc.state).thenReturn(GameInitialState(mockPicks));
       when(() => scoreCubit.state).thenReturn(0);
       await pumpGameView(tester);
       final rulesButton = find.widgetWithText(OutlinedButton, 'RULES');
@@ -65,7 +86,7 @@ void main() {
     testWidgets(
       'show game rules in modal when click in button RULES',
       (tester) async {
-        when(() => gameBloc.state).thenReturn(const GameInitialState());
+        when(() => gameBloc.state).thenReturn(GameInitialState(mockPicks));
         when(() => scoreCubit.state).thenReturn(0);
         await pumpGameView(tester);
         final rulesButton = find.widgetWithText(OutlinedButton, 'RULES');
@@ -91,7 +112,7 @@ void main() {
     testWidgets(
       'close rules modal when tap in close button and render initial Game view',
       (tester) async {
-        when(() => gameBloc.state).thenReturn(const GameInitialState());
+        when(() => gameBloc.state).thenReturn(GameInitialState(mockPicks));
         when(() => scoreCubit.state).thenReturn(0);
 
         final rulesButton = find.widgetWithText(OutlinedButton, 'RULES');
