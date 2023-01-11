@@ -49,7 +49,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     final userPick = event.userPick;
     var homePick = _getHomeGamePick();
 
-    while (userPick.code == homePick.code) {
+    while (userPick.name.code == homePick.name.code) {
       homePick = _getHomeGamePick();
     }
 
