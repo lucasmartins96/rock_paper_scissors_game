@@ -7,13 +7,13 @@ class GamePickButton extends StatelessWidget {
     required this.pickImagePath,
     required this.gradientFirstColor,
     required this.gradientSecondColor,
-    required this.action,
+    this.action,
   });
 
   final String pickImagePath;
   final Color gradientFirstColor;
   final Color gradientSecondColor;
-  final VoidCallback action;
+  final VoidCallback? action;
   static const double circleSize = 108;
 
   @override
