@@ -37,7 +37,11 @@ class UserPickState extends GameState {
 }
 
 class HomePickState extends GameState {
-  const HomePickState(super.playerGamePick);
+  const HomePickState({required this.userGamePick, required this.homeGamePick})
+      : super(null);
+
+  final GamePick userGamePick;
+  final GamePick homeGamePick;
 }
 
 class GameFinishState extends GameState {

@@ -60,7 +60,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       homePick = _getHomeGamePick();
     }
 
-    emit(HomePickState(homePick));
+    emit(HomePickState(userGamePick: userPick, homeGamePick: homePick));
   }
 
   GamePick _getHomeGamePick() {
