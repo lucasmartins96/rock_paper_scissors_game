@@ -257,5 +257,37 @@ void main() {
         expect(find.text('THE HOUSE PICKED'), findsOneWidget);
       },
     );
+
+    // TODO: TEST ALL SCENARIOS
+    testWidgets('render home pick after user pick', (tester) async {
+      final rockPickButton = find.byKey(gamePickButtonRockKey);
+      final paperPickButton = find.byKey(gamePickButtonPaperKey);
+      final scissorPickButton = find.byKey(gamePickButtonScissorKey);
+
+      whenListen(
+        gameBloc,
+        Stream.fromIterable(<GameState>[
+          UserPickState(rockPlayerPick),
+          HomePickState(
+            userGamePick: rockPlayerPick,
+            homeGamePick: scissorPlayerPick,
+          ),
+        ]),
+        initialState: UserPickState(rockPlayerPick),
+      );
+      when(() => scoreCubit.state).thenReturn(0);
+
+      await pumpGameView(tester);
+
+      expect(rockPickButton, findsOneWidget);
+      expect(paperPickButton, findsNothing);
+      expect(scissorPickButton, findsNothing);
+
+      await tester.pumpAndSettle(const Duration(seconds: 5));
+
+      expect(rockPickButton, findsOneWidget);
+      expect(scissorPickButton, findsOneWidget);
+      expect(paperPickButton, findsNothing);
+    });
   });
 }
