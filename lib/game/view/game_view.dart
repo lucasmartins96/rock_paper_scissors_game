@@ -79,7 +79,13 @@ class _GameViewState extends State<GameView> {
         if (state is GameInitialState) {
           return _buildGamePicks(state.gameInitialPicks);
         } else if (state is UserPickState) {
-          return _buildUserPick(state.playerGamePick);
+          _setHomePick(state.playerGamePick);
+          return _buildUserPick(userPick: state.playerGamePick);
+        } else if (state is HomePickState) {
+          return _buildUserPick(
+            homePick: state.homeGamePick,
+            userPick: state.userGamePick,
+          );
         } else {
           return SizedBox();
         }
