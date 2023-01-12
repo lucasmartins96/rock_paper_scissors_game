@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend_mentor_rock_paper_scissors/config/colors_constants.dart';
 import 'package:frontend_mentor_rock_paper_scissors/config/images_constants.dart';
+import 'package:frontend_mentor_rock_paper_scissors/config/widget_keys_constants.dart';
 import 'package:frontend_mentor_rock_paper_scissors/game/models/game_pick.dart';
 import 'package:meta/meta.dart';
 
@@ -23,6 +24,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       iconPath: ImagesConstants.icons.paper,
       gradientBorderFirstColor: ColorsConstants.gradient.paper.color.shade300,
       gradientBorderSecondColor: ColorsConstants.gradient.paper.color.shade400,
+      buttonKey: WidgetKeysConstants.gamePickPaperButton,
     ),
     GamePick(
       name: PlayerGamePick.scissor,
@@ -31,12 +33,14 @@ class GameBloc extends Bloc<GameEvent, GameState> {
           ColorsConstants.gradient.scissors.color.shade400,
       gradientBorderSecondColor:
           ColorsConstants.gradient.scissors.color.shade500,
+      buttonKey: WidgetKeysConstants.gamePickScissorButton,
     ),
     GamePick(
       name: PlayerGamePick.rock,
       iconPath: ImagesConstants.icons.rock,
       gradientBorderFirstColor: ColorsConstants.gradient.rock.color.shade400,
       gradientBorderSecondColor: ColorsConstants.gradient.rock.color.shade500,
+      buttonKey: WidgetKeysConstants.gamePickRockButton,
     ),
   ];
 
