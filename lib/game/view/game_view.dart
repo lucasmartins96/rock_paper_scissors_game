@@ -78,6 +78,8 @@ class _GameViewState extends State<GameView> {
       builder: (context, state) {
         if (state is GameInitialState) {
           return _buildGamePicks(state.gameInitialPicks);
+        } else if (state is UserPickState) {
+          return _buildUserPick(state.playerGamePick);
         } else {
           return SizedBox();
         }
@@ -139,6 +141,53 @@ class _GameViewState extends State<GameView> {
 
   void _handleGamePick(GamePick gamePick) {
     context.read<GameBloc>().add(GameUserPickedEvent(gamePick));
+  }
+
+  Widget _buildUserPick(GamePick? userPick) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Column(
+            children: [
+              GamePickButton(
+                key: userPick!.buttonKey,
+                pickImagePath: userPick.iconPath,
+                gradientFirstColor: userPick.gradientBorderFirstColor,
+                gradientSecondColor: userPick.gradientBorderSecondColor,
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 12),
+                child: Text(
+                  'YOU PICKED',
+                  style: TextStyle(
+                    color: Colors.white,
+                    letterSpacing: 1,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Column(
+            children: const [
+              GameEmptyPick(key: WidgetKeysConstants.emptyPick),
+              Padding(
+                padding: EdgeInsets.only(top: 8),
+                child: Text(
+                  'THE HOUSE PICKED',
+                  style: TextStyle(
+                    color: Colors.white,
+                    letterSpacing: 1,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _buildRulesButton() {
