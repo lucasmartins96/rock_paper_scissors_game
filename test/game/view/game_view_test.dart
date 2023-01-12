@@ -8,7 +8,7 @@ import 'package:frontend_mentor_rock_paper_scissors/config/colors_constants.dart
 import 'package:frontend_mentor_rock_paper_scissors/config/images_constants.dart';
 import 'package:frontend_mentor_rock_paper_scissors/config/widget_keys_constants.dart';
 import 'package:frontend_mentor_rock_paper_scissors/game/game.dart';
-import 'package:frontend_mentor_rock_paper_scissors/game/models/game_pick.dart';
+import 'package:frontend_mentor_rock_paper_scissors/game/models/models.dart';
 import 'package:frontend_mentor_rock_paper_scissors/score/score.dart';
 import 'package:mocktail/mocktail.dart';
 
