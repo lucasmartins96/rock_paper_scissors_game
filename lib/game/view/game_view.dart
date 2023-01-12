@@ -137,6 +137,10 @@ class _GameViewState extends State<GameView> {
     );
   }
 
+  void _handleGamePick(GamePick gamePick) {
+    context.read<GameBloc>().add(GameUserPickedEvent(gamePick));
+  }
+
   Widget _buildRulesButton() {
     return OutlinedButton(
       onPressed: () {
