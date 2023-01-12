@@ -24,7 +24,6 @@ class GamePickButton extends StatelessWidget {
         width: circleSize,
         height: circleSize,
         decoration: BoxDecoration(
-          color: Colors.amber,
           shape: BoxShape.circle,
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -33,9 +32,9 @@ class GamePickButton extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(12),
           child: Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(24),
             decoration: const BoxDecoration(
               color: Colors.white,
               shape: BoxShape.circle,
