@@ -17,9 +17,9 @@ class MockGameBloc extends MockBloc<GameEvent, GameState> implements GameBloc {}
 class MockScoreCubit extends MockCubit<int> implements ScoreCubit {}
 
 void main() {
-  const gamePickButtonPaper = WidgetKeysConstants.gamePickPaperButton;
-  const gamePickButtonRock = WidgetKeysConstants.gamePickRockButton;
-  const gamePickButtonScissor = WidgetKeysConstants.gamePickScissorButton;
+  const gamePickButtonPaperKey = WidgetKeysConstants.gamePickPaperButton;
+  const gamePickButtonRockKey = WidgetKeysConstants.gamePickRockButton;
+  const gamePickButtonScissorKey = WidgetKeysConstants.gamePickScissorButton;
   final paperPlayerPick = GamePick(
     name: PlayerGamePick.paper,
     iconPath: ImagesConstants.icons.paper,
@@ -76,9 +76,9 @@ void main() {
       final rulesButton = find.widgetWithText(OutlinedButton, 'RULES');
       final gameScore = find.widgetWithText(GameScore, '0');
 
-      expect(find.byKey(gamePickButtonPaper), findsOneWidget);
-      expect(find.byKey(gamePickButtonRock), findsOneWidget);
-      expect(find.byKey(gamePickButtonScissor), findsOneWidget);
+      expect(find.byKey(gamePickButtonPaperKey), findsOneWidget);
+      expect(find.byKey(gamePickButtonRockKey), findsOneWidget);
+      expect(find.byKey(gamePickButtonScissorKey), findsOneWidget);
       expect(rulesButton, findsOneWidget);
       expect(gameScore, findsOneWidget);
     });
@@ -128,9 +128,9 @@ void main() {
         await tester.tap(closeRulesModalButton);
         await tester.pumpAndSettle();
         expect(rulesModal, findsNothing);
-        expect(find.byKey(gamePickButtonPaper), findsOneWidget);
-        expect(find.byKey(gamePickButtonRock), findsOneWidget);
-        expect(find.byKey(gamePickButtonScissor), findsOneWidget);
+        expect(find.byKey(gamePickButtonPaperKey), findsOneWidget);
+        expect(find.byKey(gamePickButtonRockKey), findsOneWidget);
+        expect(find.byKey(gamePickButtonScissorKey), findsOneWidget);
         expect(gameScore, findsOneWidget);
         expect(rulesButton, findsOneWidget);
       },
