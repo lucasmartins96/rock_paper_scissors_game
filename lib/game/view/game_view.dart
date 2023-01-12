@@ -171,9 +171,9 @@ class _GameViewState extends State<GameView> {
         ),
         Expanded(
           child: Column(
-            children: const [
-              GameEmptyPick(key: WidgetKeysConstants.emptyPick),
-              Padding(
+            children: [
+              _handleHomePick(homePick),
+              const Padding(
                 padding: EdgeInsets.only(top: 8),
                 child: Text(
                   'THE HOUSE PICKED',
@@ -188,6 +188,17 @@ class _GameViewState extends State<GameView> {
         ),
       ],
     );
+  }
+
+  Widget _handleHomePick(GamePick? homePick) {
+    return homePick != null
+        ? GamePickButton(
+            key: homePick.buttonKey,
+            pickImagePath: homePick.iconPath,
+            gradientFirstColor: homePick.gradientBorderFirstColor,
+            gradientSecondColor: homePick.gradientBorderSecondColor,
+          )
+        : const GameEmptyPick(key: WidgetKeysConstants.emptyPick);
   }
 
   Widget _buildRulesButton() {
