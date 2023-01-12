@@ -77,7 +77,7 @@ class _GameViewState extends State<GameView> {
     return BlocBuilder<GameBloc, GameState>(
       builder: (context, state) {
         if (state is GameInitialState) {
-          return _buildGamePicks();
+          return _buildGamePicks(state.gameInitialPicks);
         } else {
           return SizedBox();
         }
@@ -85,7 +85,11 @@ class _GameViewState extends State<GameView> {
     );
   }
 
-  Widget _buildGamePicks() {
+  Widget _buildGamePicks(List<GamePick> gamePicks) {
+    final paperPick = gamePicks[0];
+    final scissorPick = gamePicks[1];
+    final rockPick = gamePicks[2];
+
     return SizedBox(
       width: 300,
       height: 300,
@@ -102,33 +106,30 @@ class _GameViewState extends State<GameView> {
             alignment: Alignment.topLeft,
             child: GamePickButton(
               key: const Key('player_game_pick_paper'),
-              pickImagePath: ImagesConstants.icons.paper,
-              gradientFirstColor: ColorsConstants.gradient.paper.color.shade300,
-              gradientSecondColor:
-                  ColorsConstants.gradient.paper.color.shade400,
-              action: () {},
+              pickImagePath: paperPick.iconPath,
+              gradientFirstColor: paperPick.gradientBorderFirstColor,
+              gradientSecondColor: paperPick.gradientBorderSecondColor,
+              action: () => _handleGamePick(paperPick),
             ),
           ),
           Align(
             alignment: Alignment.topRight,
             child: GamePickButton(
               key: const Key('player_game_pick_scissor'),
-              pickImagePath: ImagesConstants.icons.scissor,
-              gradientFirstColor:
-                  ColorsConstants.gradient.scissors.color.shade400,
-              gradientSecondColor:
-                  ColorsConstants.gradient.scissors.color.shade500,
-              action: () {},
+              pickImagePath: scissorPick.iconPath,
+              gradientFirstColor: scissorPick.gradientBorderFirstColor,
+              gradientSecondColor: scissorPick.gradientBorderSecondColor,
+              action: () => _handleGamePick(scissorPick),
             ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
             child: GamePickButton(
               key: const Key('player_game_pick_rock'),
-              pickImagePath: ImagesConstants.icons.rock,
-              gradientFirstColor: ColorsConstants.gradient.rock.color.shade400,
-              gradientSecondColor: ColorsConstants.gradient.rock.color.shade500,
-              action: () {},
+              pickImagePath: rockPick.iconPath,
+              gradientFirstColor: rockPick.gradientBorderFirstColor,
+              gradientSecondColor: rockPick.gradientBorderSecondColor,
+              action: () => _handleGamePick(rockPick),
             ),
           ),
         ],
