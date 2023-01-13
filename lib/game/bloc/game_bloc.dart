@@ -76,7 +76,15 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     final winnerPick = gameInitialPicks
         .singleWhere((gamePick) => playerGamePick == gamePick.name);
 
-    emit(GameFinishState(winnerPick));
+    final isUserWin = winnerPick == event.userPick;
+
+    emit(
+      GameFinishState(
+        userGamePick: event.userPick,
+        homeGamePick: event.homePick,
+        isUserWin: isUserWin,
+      ),
+    );
   }
 
   PlayerGamePick _getWinnerPick(
