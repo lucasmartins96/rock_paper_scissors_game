@@ -18,5 +18,5 @@ class GamePick extends Equatable {
   final Key? buttonKey;
 
   @override
-  List<Object?> get props => [name];
+  List<Object?> get props => [name.name];
 }
