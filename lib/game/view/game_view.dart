@@ -82,6 +82,15 @@ class _GameViewState extends State<GameView> {
           _setHomePick(state.playerGamePick);
           return _buildUserPick(userPick: state.playerGamePick);
         } else if (state is HomePickState) {
+          _setGameResult(
+            userPick: state.userGamePick,
+            homePick: state.homeGamePick,
+          );
+          return _buildUserPick(
+            homePick: state.homeGamePick,
+            userPick: state.userGamePick,
+          );
+        } else if (state is GameFinishState) {
           return _buildUserPick(
             homePick: state.homeGamePick,
             userPick: state.userGamePick,
