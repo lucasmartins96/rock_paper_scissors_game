@@ -156,6 +156,18 @@ class _GameViewState extends State<GameView> {
     );
   }
 
+  void _setGameResult({GamePick? userPick, GamePick? homePick}) {
+    Future.delayed(
+      const Duration(seconds: 2),
+      () => context.read<GameBloc>().add(
+            GameFinishedEvent(
+              userPick: userPick!,
+              homePick: homePick!,
+            ),
+          ),
+    );
+  }
+
   Widget _buildUserPick({GamePick? userPick, GamePick? homePick}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
