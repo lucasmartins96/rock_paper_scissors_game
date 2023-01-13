@@ -94,6 +94,7 @@ class _GameViewState extends State<GameView> {
           return _buildUserPick(
             homePick: state.homeGamePick,
             userPick: state.userGamePick,
+            isUserWin: state.isUserWin,
           );
         } else {
           return SizedBox();
@@ -177,47 +178,102 @@ class _GameViewState extends State<GameView> {
     );
   }
 
-  Widget _buildUserPick({GamePick? userPick, GamePick? homePick}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget _buildUserPick({
+    GamePick? userPick,
+    GamePick? homePick,
+    bool? isUserWin,
+  }) {
+    return Column(
       children: [
-        Expanded(
-          child: Column(
-            children: [
-              GamePickButton(
-                key: userPick!.buttonKey,
-                pickImagePath: userPick.iconPath,
-                gradientFirstColor: userPick.gradientBorderFirstColor,
-                gradientSecondColor: userPick.gradientBorderSecondColor,
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 12),
-                child: Text(
-                  'YOU PICKED',
-                  style: TextStyle(
-                    color: Colors.white,
-                    letterSpacing: 1,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  GamePickButton(
+                    key: userPick!.buttonKey,
+                    pickImagePath: userPick.iconPath,
+                    gradientFirstColor: userPick.gradientBorderFirstColor,
+                    gradientSecondColor: userPick.gradientBorderSecondColor,
                   ),
-                ),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 12),
+                    child: Text(
+                      'YOU PICKED',
+                      style: TextStyle(
+                        color: Colors.white,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            Expanded(
+              child: Column(
+                children: [
+                  _handleHomePick(homePick),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 8),
+                    child: Text(
+                      'THE HOUSE PICKED',
+                      style: TextStyle(
+                        color: Colors.white,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-        Expanded(
-          child: Column(
-            children: [
-              _handleHomePick(homePick),
-              const Padding(
-                padding: EdgeInsets.only(top: 8),
-                child: Text(
-                  'THE HOUSE PICKED',
-                  style: TextStyle(
-                    color: Colors.white,
-                    letterSpacing: 1,
-                  ),
-                ),
+        if (isUserWin != null)
+          _buildGameResult(isUserWin)
+        else
+          const SizedBox(),
+      ],
+    );
+  }
+
+  Widget _buildGameResult(bool isUserWin) {
+    final gameResultMessage = isUserWin ? 'YOU WIN' : 'YOU LOSE';
+    const textStyle = TextStyle(
+      color: Colors.white,
+      fontSize: 56,
+      letterSpacing: 1,
+    );
+    isUserWin
+        ? context.read<ScoreCubit>().increment()
+        : context.read<ScoreCubit>().decrement();
+
+    return Column(
+      children: [
+        Text(
+          gameResultMessage,
+          style: textStyle,
+        ),
+        ElevatedButton(
+          onPressed: () {
+            context.read<GameBloc>().add(GameStartedEvent());
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+            ),
+          ),
+          child: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 64, vertical: 12),
+            child: Text(
+              'PLAY AGAIN',
+              style: TextStyle(
+                color: ColorsConstants.darkText,
+                fontSize: 18,
+                letterSpacing: 2,
               ),
-            ],
+            ),
           ),
         ),
       ],
