@@ -33,11 +33,7 @@ class _GameViewState extends State<GameView> {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(
-          top: 16,
-          left: 16,
-          right: 16,
-        ),
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -183,6 +179,14 @@ class _GameViewState extends State<GameView> {
     GamePick? homePick,
     bool? isUserWin,
   }) {
+    const pickedMessageTextStyle = TextStyle(
+      color: Colors.white,
+      letterSpacing: 1,
+      fontWeight: FontWeight.w800,
+      fontSize: 16,
+    );
+    const padding = EdgeInsets.only(top: 20);
+
     return Column(
       children: [
         Row(
@@ -198,13 +202,10 @@ class _GameViewState extends State<GameView> {
                     gradientSecondColor: userPick.gradientBorderSecondColor,
                   ),
                   const Padding(
-                    padding: EdgeInsets.only(top: 12),
+                    padding: padding,
                     child: Text(
                       'YOU PICKED',
-                      style: TextStyle(
-                        color: Colors.white,
-                        letterSpacing: 1,
-                      ),
+                      style: pickedMessageTextStyle,
                     ),
                   ),
                 ],
@@ -215,13 +216,10 @@ class _GameViewState extends State<GameView> {
                 children: [
                   _handleHomePick(homePick),
                   const Padding(
-                    padding: EdgeInsets.only(top: 8),
+                    padding: padding,
                     child: Text(
                       'THE HOUSE PICKED',
-                      style: TextStyle(
-                        color: Colors.white,
-                        letterSpacing: 1,
-                      ),
+                      style: pickedMessageTextStyle,
                     ),
                   ),
                 ],
@@ -248,35 +246,41 @@ class _GameViewState extends State<GameView> {
         ? context.read<ScoreCubit>().increment()
         : context.read<ScoreCubit>().decrement();
 
-    return Column(
-      children: [
-        Text(
-          gameResultMessage,
-          style: textStyle,
-        ),
-        ElevatedButton(
-          onPressed: () {
-            context.read<GameBloc>().add(GameStartedEvent());
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(8)),
-            ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 80),
+      child: Column(
+        children: [
+          Text(
+            gameResultMessage,
+            style: textStyle,
           ),
-          child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 64, vertical: 12),
-            child: Text(
-              'PLAY AGAIN',
-              style: TextStyle(
-                color: ColorsConstants.darkText,
-                fontSize: 18,
-                letterSpacing: 2,
+          Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: ElevatedButton(
+              onPressed: () {
+                context.read<GameBloc>().add(GameStartedEvent());
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                ),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 64, vertical: 12),
+                child: Text(
+                  'PLAY AGAIN',
+                  style: TextStyle(
+                    color: ColorsConstants.darkText,
+                    fontSize: 18,
+                    letterSpacing: 2,
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -292,30 +296,33 @@ class _GameViewState extends State<GameView> {
   }
 
   Widget _buildRulesButton() {
-    return OutlinedButton(
-      onPressed: () {
-        showModalBottomSheet<void>(
-          context: context,
-          isScrollControlled: true,
-          builder: (_) => const RulesModal(
-            key: WidgetKeysConstants.rulesModal,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 48),
+      child: OutlinedButton(
+        onPressed: () {
+          showModalBottomSheet<void>(
+            context: context,
+            isScrollControlled: true,
+            builder: (_) => const RulesModal(
+              key: WidgetKeysConstants.rulesModal,
+            ),
+          );
+        },
+        style: OutlinedButton.styleFrom(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
-        );
-      },
-      style: OutlinedButton.styleFrom(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
+          side: const BorderSide(width: 1.5, color: Colors.white),
         ),
-        side: const BorderSide(width: 1.5, color: Colors.white),
-      ),
-      child: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        child: Text(
-          'RULES',
-          style: TextStyle(
-            fontSize: 16,
-            letterSpacing: 1,
-            color: Colors.white,
+        child: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24),
+          child: Text(
+            'RULES',
+            style: TextStyle(
+              fontSize: 16,
+              letterSpacing: 1,
+              color: Colors.white,
+            ),
           ),
         ),
       ),
