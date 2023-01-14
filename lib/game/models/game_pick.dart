@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend_mentor_rock_paper_scissors/game/game.dart';
+
+enum PlayerGamePicks { paper, rock, scissor }
 
 class GamePick extends Equatable {
   const GamePick({

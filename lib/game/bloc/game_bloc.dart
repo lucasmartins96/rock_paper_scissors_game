@@ -87,22 +87,22 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     );
   }
 
-  PlayerGamePick _getWinnerPick(
-    PlayerGamePick userPick,
-    PlayerGamePick homePick,
+  PlayerGamePicks _getWinnerPick(
+    PlayerGamePicks userPick,
+    PlayerGamePicks homePick,
   ) {
     const userPickWeight = 1;
     var homePickWeight = 0;
 
     switch (userPick) {
-      case PlayerGamePick.paper:
-        homePickWeight = homePick == PlayerGamePick.scissor ? 2 : 0;
+      case PlayerGamePicks.paper:
+        homePickWeight = homePick == PlayerGamePicks.scissor ? 2 : 0;
         break;
-      case PlayerGamePick.rock:
-        homePickWeight = homePick == PlayerGamePick.paper ? 2 : 0;
+      case PlayerGamePicks.rock:
+        homePickWeight = homePick == PlayerGamePicks.paper ? 2 : 0;
         break;
-      case PlayerGamePick.scissor:
-        homePickWeight = homePick == PlayerGamePick.rock ? 2 : 0;
+      case PlayerGamePicks.scissor:
+        homePickWeight = homePick == PlayerGamePicks.rock ? 2 : 0;
         break;
     }
 

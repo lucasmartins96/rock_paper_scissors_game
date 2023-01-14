@@ -1,21 +1,5 @@
 part of 'game_bloc.dart';
 
-enum PlayerGamePick {
-  paper(0, 'paper'),
-  rock(1, 'rock'),
-  scissor(2, 'scissor');
-
-  const PlayerGamePick(this.code, this.name);
-
-  final int code;
-  final String name;
-
-  static PlayerGamePick getByCode(int code) {
-    return PlayerGamePick.values
-        .firstWhere((gamePick) => gamePick.code == code);
-  }
-}
-
 @immutable
 abstract class GameState extends Equatable {
   const GameState(this.playerGamePick);
