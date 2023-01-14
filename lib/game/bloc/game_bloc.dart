@@ -11,38 +11,16 @@ part 'game_event.dart';
 part 'game_state.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
-  GameBloc() : super(GameInitialState(gameInitialPicks)) {
+  GameBloc({GameRepository? gameRepository})
+      : _gameRepository = gameRepository ?? GameRepositoryStatic(),
+        super(GameInitialState(gameInitialPicks)) {
     on<GameStartedEvent>(_onStarted);
     on<GameUserPickedEvent>(_onUserPick);
     on<GameHomePickedEvent>(_onHomePick);
     on<GameFinishedEvent>(_onFinished);
   }
 
-  static final List<GamePick> gameInitialPicks = [
-    GamePick(
-      name: PlayerGamePick.paper,
-      iconPath: ImagesConstants.icons.paper,
-      gradientBorderFirstColor: ColorsConstants.gradient.paper.color.shade300,
-      gradientBorderSecondColor: ColorsConstants.gradient.paper.color.shade400,
-      buttonKey: WidgetKeysConstants.gamePickPaperButton,
-    ),
-    GamePick(
-      name: PlayerGamePick.scissor,
-      iconPath: ImagesConstants.icons.scissor,
-      gradientBorderFirstColor:
-          ColorsConstants.gradient.scissors.color.shade400,
-      gradientBorderSecondColor:
-          ColorsConstants.gradient.scissors.color.shade500,
-      buttonKey: WidgetKeysConstants.gamePickScissorButton,
-    ),
-    GamePick(
-      name: PlayerGamePick.rock,
-      iconPath: ImagesConstants.icons.rock,
-      gradientBorderFirstColor: ColorsConstants.gradient.rock.color.shade400,
-      gradientBorderSecondColor: ColorsConstants.gradient.rock.color.shade500,
-      buttonKey: WidgetKeysConstants.gamePickRockButton,
-    ),
-  ];
+  final GameRepository _gameRepository;
 
   void _onStarted(GameStartedEvent event, Emitter<GameState> emit) {
     emit(GameInitialState(gameInitialPicks));
