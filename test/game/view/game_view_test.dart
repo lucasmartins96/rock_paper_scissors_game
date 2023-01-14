@@ -289,5 +289,100 @@ void main() {
       expect(scissorPickButton, findsOneWidget);
       expect(paperPickButton, findsNothing);
     });
+
+    testWidgets(
+      'render finish game view with message "YOU LOSE" and decrease score',
+      (tester) async {
+        whenListen(
+          gameBloc,
+          Stream.fromIterable(<GameState>[
+            HomePickState(
+              userGamePick: paperPlayerPick,
+              homeGamePick: scissorPlayerPick,
+            ),
+            GameFinishState(
+              userGamePick: paperPlayerPick,
+              homeGamePick: scissorPlayerPick,
+              isUserWin: false,
+            ),
+          ]),
+          initialState: HomePickState(
+            userGamePick: paperPlayerPick,
+            homeGamePick: scissorPlayerPick,
+          ),
+        );
+        when(() => scoreCubit.stream)
+            .thenAnswer((invocation) => Stream.fromIterable([1, 0]));
+        when(() => scoreCubit.state).thenReturn(1);
+        when(() => scoreCubit.decrement()).thenReturn(null);
+
+        await pumpGameView(tester);
+
+        expect(find.byKey(gamePickButtonRockKey), findsNothing);
+        expect(find.byKey(gamePickButtonPaperKey), findsOneWidget);
+        expect(find.byKey(gamePickButtonScissorKey), findsOneWidget);
+        expect(find.widgetWithText(GameScore, '1'), findsOneWidget);
+
+        await tester.pumpAndSettle(const Duration(seconds: 5));
+
+        expect(find.text('YOU LOSE'), findsOneWidget);
+        expect(find.byKey(gamePickButtonRockKey), findsNothing);
+        expect(find.byKey(gamePickButtonPaperKey), findsOneWidget);
+        expect(find.byKey(gamePickButtonScissorKey), findsOneWidget);
+        expect(
+          find.widgetWithText(ElevatedButton, 'PLAY AGAIN'),
+          findsOneWidget,
+        );
+        expect(find.widgetWithText(GameScore, '1'), findsNothing);
+        expect(find.widgetWithText(GameScore, '0'), findsOneWidget);
+        verify(() => scoreCubit.decrement()).called(1);
+      },
+    );
+
+    testWidgets(
+      'render finish game view with message "YOU WIN" and increase score',
+      (tester) async {
+        whenListen(
+          gameBloc,
+          Stream.fromIterable(<GameState>[
+            HomePickState(
+              userGamePick: rockPlayerPick,
+              homeGamePick: scissorPlayerPick,
+            ),
+            GameFinishState(
+              userGamePick: rockPlayerPick,
+              homeGamePick: scissorPlayerPick,
+              isUserWin: true,
+            ),
+          ]),
+          initialState: HomePickState(
+            userGamePick: rockPlayerPick,
+            homeGamePick: scissorPlayerPick,
+          ),
+        );
+        when(() => scoreCubit.stream)
+            .thenAnswer((invocation) => Stream.fromIterable([1, 2]));
+        when(() => scoreCubit.state).thenReturn(1);
+        when(() => scoreCubit.increment()).thenReturn(null);
+
+        await pumpGameView(tester);
+
+        expect(find.byKey(gamePickButtonPaperKey), findsNothing);
+        expect(find.byKey(gamePickButtonRockKey), findsOneWidget);
+        expect(find.byKey(gamePickButtonScissorKey), findsOneWidget);
+        expect(find.widgetWithText(GameScore, '1'), findsOneWidget);
+
+        await tester.pumpAndSettle(const Duration(seconds: 5));
+
+        expect(find.text('YOU WIN'), findsOneWidget);
+        expect(
+          find.widgetWithText(ElevatedButton, 'PLAY AGAIN'),
+          findsOneWidget,
+        );
+        expect(find.widgetWithText(GameScore, '2'), findsOneWidget);
+        expect(find.widgetWithText(GameScore, '1'), findsNothing);
+        verify(() => scoreCubit.increment()).called(1);
+      },
+    );
   });
 }
