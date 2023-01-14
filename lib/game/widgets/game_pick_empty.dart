@@ -4,7 +4,7 @@ import 'package:frontend_mentor_rock_paper_scissors/config/colors_constants.dart
 class GameEmptyPick extends StatelessWidget {
   const GameEmptyPick({super.key});
 
-  static const double circleSize = 108;
+  static const double circleSize = 128;
 
   @override
   Widget build(BuildContext context) {

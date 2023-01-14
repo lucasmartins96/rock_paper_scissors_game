@@ -14,7 +14,7 @@ class GamePickButton extends StatelessWidget {
   final Color gradientFirstColor;
   final Color gradientSecondColor;
   final VoidCallback? action;
-  static const double circleSize = 108;
+  static const double circleSize = 128;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class GamePickButton extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(16),
           child: Container(
             padding: const EdgeInsets.all(24),
             decoration: const BoxDecoration(
