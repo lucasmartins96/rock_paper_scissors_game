@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'package:frontend_mentor_rock_paper_scissors/config/colors_constants.dart';
 import 'package:frontend_mentor_rock_paper_scissors/config/images_constants.dart';
 import 'package:frontend_mentor_rock_paper_scissors/config/widget_keys_constants.dart';
 import 'package:frontend_mentor_rock_paper_scissors/game/game.dart';
 import 'package:frontend_mentor_rock_paper_scissors/game/models/models.dart';
+import 'package:frontend_mentor_rock_paper_scissors/game/widgets/animated_game_result.dart';
 import 'package:frontend_mentor_rock_paper_scissors/game/widgets/game_pick_empty.dart';
 import 'package:frontend_mentor_rock_paper_scissors/game/widgets/rules_modal.dart';
 import 'package:frontend_mentor_rock_paper_scissors/score/score.dart';
@@ -227,60 +227,8 @@ class _GameViewState extends State<GameView> {
             ),
           ],
         ),
-        if (isUserWin != null)
-          _buildGameResult(isUserWin)
-        else
-          const SizedBox(),
+        AnimatedGameResult(isUserWin: isUserWin),
       ],
-    );
-  }
-
-  Widget _buildGameResult(bool isUserWin) {
-    final gameResultMessage = isUserWin ? 'YOU WIN' : 'YOU LOSE';
-    const textStyle = TextStyle(
-      color: Colors.white,
-      fontSize: 56,
-      letterSpacing: 1,
-    );
-    isUserWin
-        ? context.read<ScoreCubit>().increment()
-        : context.read<ScoreCubit>().decrement();
-
-    return Padding(
-      padding: const EdgeInsets.only(top: 80),
-      child: Column(
-        children: [
-          Text(
-            gameResultMessage,
-            style: textStyle,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16),
-            child: ElevatedButton(
-              onPressed: () {
-                context.read<GameBloc>().add(GameStartedEvent());
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
-                ),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 64, vertical: 12),
-                child: Text(
-                  'PLAY AGAIN',
-                  style: TextStyle(
-                    color: ColorsConstants.darkText,
-                    fontSize: 18,
-                    letterSpacing: 2,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
