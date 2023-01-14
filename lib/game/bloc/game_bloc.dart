@@ -56,7 +56,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     final userPick = event.userPick;
     var homePick = _getHomeGamePick();
 
-    while (userPick.name.code == homePick.name.code) {
+    while (userPick.pick.code == homePick.pick.code) {
       homePick = _getHomeGamePick();
     }
 
@@ -72,9 +72,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   void _onFinished(GameFinishedEvent event, Emitter<GameState> emit) {
     final playerGamePick =
-        _getWinnerPick(event.userPick.name, event.homePick.name);
+        _getWinnerPick(event.userPick.pick, event.homePick.pick);
     final winnerPick = gameInitialPicks
-        .singleWhere((gamePick) => playerGamePick == gamePick.name);
+        .singleWhere((gamePick) => playerGamePick == gamePick.pick);
 
     final isUserWin = winnerPick == event.userPick;
 

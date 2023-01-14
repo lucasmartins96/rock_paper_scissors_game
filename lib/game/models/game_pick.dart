@@ -5,19 +5,19 @@ enum PlayerGamePicks { paper, rock, scissor }
 
 class GamePick extends Equatable {
   const GamePick({
-    required this.name,
+    required this.pick,
     required this.iconPath,
     required this.gradientBorderFirstColor,
     required this.gradientBorderSecondColor,
     this.buttonKey,
   });
 
-  final PlayerGamePick name;
+  final PlayerGamePicks pick;
   final String iconPath;
   final Color gradientBorderFirstColor;
   final Color gradientBorderSecondColor;
   final Key? buttonKey;
 
   @override
-  List<Object?> get props => [name.name];
+  List<Object?> get props => [pick.name];
 }
