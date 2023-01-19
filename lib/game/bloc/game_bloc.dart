@@ -49,7 +49,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     const picks = 3;
     const maxRange = 10;
     final randomNumber = Random().nextInt(maxRange) % picks;
-    return gameInitialPicks.elementAt(randomNumber);
+    return state.gamePicks.elementAt(randomNumber);
   }
 
   void _onFinished(GameFinishedEvent event, Emitter<GameState> emit) {
