@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:frontend_mentor_rock_paper_scissors/config/colors_constants.dart';
+import 'package:frontend_mentor_rock_paper_scissors/common.dart';
+import 'package:frontend_mentor_rock_paper_scissors/config/config.dart';
 
 class GameEmptyPick extends StatelessWidget {
-  const GameEmptyPick({super.key});
+  const GameEmptyPick() : super(key: WidgetKeysConstants.emptyPick);
 
   static const double circleSize = 128;
 
