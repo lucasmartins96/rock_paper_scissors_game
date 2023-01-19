@@ -10,7 +10,7 @@ part 'game_state.dart';
 class GameBloc extends Bloc<GameEvent, GameState> {
   GameBloc({GameRepository? gameRepository})
       : _gameRepository = gameRepository ?? GameRepositoryStatic(),
-        super(GameInitialState(gameInitialPicks)) {
+        super(const GameState()) {
     on<GameStartedEvent>(_onStarted);
     on<GameUserPickedEvent>(_onUserPick);
     on<GameHomePickedEvent>(_onHomePick);
