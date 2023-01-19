@@ -29,7 +29,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   void _onUserPick(GameUserPickedEvent event, Emitter<GameState> emit) {
-    emit(UserPickState(event.userPick));
+    emit(
+      state.copyWith(userPick: event.userPick, status: GameStatus.progress),
+    );
   }
 
   void _onHomePick(GameHomePickedEvent event, Emitter<GameState> emit) {
