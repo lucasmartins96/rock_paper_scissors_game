@@ -1,8 +1,6 @@
 part of 'game_bloc.dart';
 
-@immutable
-abstract class GameState extends Equatable {
-  const GameState(this.playerGamePick);
+enum GameStatus { start, progress, finish }
 
   final GamePick? playerGamePick;
 
