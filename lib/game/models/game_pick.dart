@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+import 'package:frontend_mentor_rock_paper_scissors/common.dart';
 
 enum PlayerGamePicks { paper, rock, scissor }
 
@@ -19,5 +19,11 @@ class GamePick extends Equatable {
   final Key? buttonKey;
 
   @override
-  List<Object?> get props => [pick.name];
+  List<Object?> get props => [
+        pick.name,
+        iconPath,
+        gradientBorderFirstColor,
+        gradientBorderSecondColor,
+        buttonKey,
+      ];
 }
