@@ -35,14 +35,14 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   void _onHomePick(GameHomePickedEvent event, Emitter<GameState> emit) {
-    final userPick = event.userPick;
+    final userPick = state.userPick;
     var homePick = _getHomeGamePick();
 
-    while (userPick.pick.code == homePick.pick.code) {
+    while (userPick == homePick) {
       homePick = _getHomeGamePick();
     }
 
-    emit(HomePickState(userGamePick: userPick, homeGamePick: homePick));
+    emit(state.copyWith(homePick: homePick));
   }
 
   GamePick _getHomeGamePick() {
