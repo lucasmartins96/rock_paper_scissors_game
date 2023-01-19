@@ -20,7 +20,12 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   final GameRepository _gameRepository;
 
   void _onStarted(GameStartedEvent event, Emitter<GameState> emit) {
-    emit(GameInitialState(gameInitialPicks));
+    if (state.status == GameStatus.finish) {
+      return emit(state.reset());
+    }
+
+    final initialPicks = _gameRepository.getAllPicks();
+    emit(state.copyWith(gamePicks: initialPicks));
   }
 
   void _onUserPick(GameUserPickedEvent event, Emitter<GameState> emit) {
