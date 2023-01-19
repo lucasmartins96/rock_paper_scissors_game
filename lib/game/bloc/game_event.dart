@@ -11,18 +11,6 @@ class GameUserPickedEvent extends GameEvent {
   final GamePick userPick;
 }
 
-class GameHomePickedEvent extends GameEvent {
-  GameHomePickedEvent(this.userPick);
+class GameHomePickedEvent extends GameEvent {}
 
-  final GamePick userPick;
-}
-
-class GameFinishedEvent extends GameEvent {
-  GameFinishedEvent({
-    required this.userPick,
-    required this.homePick,
-  });
-
-  final GamePick userPick;
-  final GamePick homePick;
-}
+class GameFinishedEvent extends GameEvent {}
