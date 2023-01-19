@@ -2,60 +2,44 @@ part of 'game_bloc.dart';
 
 enum GameStatus { start, progress, finish }
 
-  final GamePick? playerGamePick;
-
-  @override
-  List<Object?> get props => [playerGamePick];
-}
-
-class GameInitialState extends GameState {
-  const GameInitialState(this.gameInitialPicks) : super(null);
-
-  final List<GamePick> gameInitialPicks;
-}
-
-class UserPickState extends GameState {
-  const UserPickState(super.playerGamePick);
-}
-
-class HomePickState extends GameState {
-  const HomePickState({required this.userGamePick, required this.homeGamePick})
-      : super(null);
-
-  final GamePick userGamePick;
-  final GamePick homeGamePick;
-}
-
-class GameFinishState extends GameState {
-  const GameFinishState({
-    required this.userGamePick,
-    required this.homeGamePick,
-    required this.isUserWin,
-  }) : super(null);
-
-  final GamePick userGamePick;
-  final GamePick homeGamePick;
-  final bool isUserWin;
-}
-
-// class GameHousePicked extends GameState {}
-
-// class GameComplete extends GameState {}
-
-/*
-
+// @immutable
 class GameState extends Equatable {
+  const GameState({
+    this.gamePicks = const [],
+    this.userPick,
+    this.homePick,
+    this.isUserWin,
+    this.status = GameStatus.start,
+  });
+
+  final List<GamePick> gamePicks;
+  final GamePick? userPick;
+  final GamePick? homePick;
+  final bool? isUserWin;
   final GameStatus status;
-  final PlayerGamePick userPick;
-  final PlayerGamePick homePick;
-  
+
+  GameState copyWith({
+    List<GamePick>? gamePicks,
+    GamePick? userPick,
+    GamePick? homePick,
+    bool? isUserWin,
+    GameStatus? status,
+  }) {
+    return GameState(
+      gamePicks: gamePicks ?? this.gamePicks,
+      userPick: userPick ?? this.userPick,
+      homePick: homePick ?? this.homePick,
+      isUserWin: isUserWin ?? this.isUserWin,
+      status: status ?? this.status,
+    );
+  }
+
+  GameState reset() => GameState(gamePicks: gamePicks);
 
   @override
-  List<Object?> get props => throw UnimplementedError();
-} */
-
-/* 
-  initial
-  userPick
-  homePick
- */
+  List<Object?> get props => [
+        userPick?.pick.name,
+        homePick?.pick.name,
+        isUserWin,
+      ];
+}
