@@ -38,167 +38,280 @@ void main() {
       expect(GameBloc(gameRepository: repository).state, const GameState());
     });
 
-    blocTest<GameBloc, GameState>(
-      'emits [GameInitialState] after dispatch GameStartedEvent',
-      build: GameBloc.new,
-      act: (bloc) => bloc.add(GameStartedEvent()),
-      expect: () => [const GameInitialState(mockPicks)],
-    );
+    group('GameStartedEvent', () {
+      blocTest<GameBloc, GameState>(
+        'emits [GameState] with picks not empty '
+        'when GameStartedEvent is added.',
+        setUp: () {
+          when(() => repository.getAllPicks()).thenReturn(mockPicks);
+        },
+        build: () => GameBloc(gameRepository: repository),
+        act: (bloc) => bloc.add(GameStartedEvent()),
+        expect: () => const [GameState(gamePicks: mockPicks)],
+        verify: (_) {
+          verify(() => repository.getAllPicks()).called(1);
+        },
+      );
 
-    blocTest<GameBloc, GameState>(
-      'emits [UserPickState(PlayerGamePick.paper)] '
-      'after dispatch GameUserPickedEvent(PlayerGamePick.paper)',
-      build: GameBloc.new,
-      act: (bloc) => bloc.add(GameUserPickedEvent(paperPlayerPick)),
-      expect: () => [const UserPickState(paperPlayerPick)],
-    );
+      blocTest<GameBloc, GameState>(
+        'emits [GameState] reset when GameStartedEvent is added.',
+        build: () => GameBloc(gameRepository: repository),
+        seed: () => const GameState(
+          gamePicks: mockPicks,
+          userPick: paperPlayerPick,
+          homePick: rockPlayerPick,
+          isUserWin: true,
+          status: GameStatus.finish,
+        ),
+        act: (bloc) => bloc.add(GameStartedEvent()),
+        expect: () => const [GameState(gamePicks: mockPicks)],
+      );
+    });
+
+    group('GameUserPickedEvent', () {
+      blocTest<GameBloc, GameState>(
+        'emits [GameState] with userPick filled and status in progress '
+        'when GameUserPickedEvent is added with user pick.',
+        build: () => GameBloc(gameRepository: repository),
+        seed: () => const GameState(gamePicks: mockPicks),
+        act: (bloc) => bloc.add(GameUserPickedEvent(paperPlayerPick)),
+        expect: () => const [
+          GameState(
+            gamePicks: mockPicks,
+            userPick: paperPlayerPick,
+            status: GameStatus.progress,
+          )
+        ],
+      );
+    });
 
     group('GameHomePickedEvent', () {
       blocTest<GameBloc, GameState>(
-        'emits [HomePickState(PlayerGamePick.rock)] '
-        'or [HomePickState(PlayerGamePick.paper)] '
-        'after dispatch GameHomePickedEvent(PlayerGamePick.scissor)',
-        build: GameBloc.new,
-        act: (bloc) => bloc.add(GameHomePickedEvent(scissorPlayerPick)),
+        'emits [GameState] with homePick value other than userPick value '
+        'and status in progress '
+        'when GameHomePickedEvent is added and user pick value is "paper".',
+        build: () => GameBloc(gameRepository: repository),
+        seed: () => const GameState(
+          gamePicks: mockPicks,
+          userPick: paperPlayerPick,
+          status: GameStatus.progress,
+        ),
+        act: (bloc) => bloc.add(GameHomePickedEvent()),
         expect: () => [
           anyOf(
-            const HomePickState(rockPlayerPick),
-            const HomePickState(paperPlayerPick),
-          )
+            const GameState(
+              gamePicks: mockPicks,
+              userPick: paperPlayerPick,
+              homePick: scissorPlayerPick,
+              status: GameStatus.progress,
+            ),
+            const GameState(
+              gamePicks: mockPicks,
+              userPick: paperPlayerPick,
+              homePick: rockPlayerPick,
+              status: GameStatus.progress,
+            ),
+          ),
         ],
       );
 
       blocTest<GameBloc, GameState>(
-        'emits [HomePickState(PlayerGamePick.rock)] '
-        'or [HomePickState(PlayerGamePick.scissor)] '
-        'after dispatch GameHomePickedEvent(PlayerGamePick.paper)',
-        build: GameBloc.new,
-        act: (bloc) => bloc.add(GameHomePickedEvent(paperPlayerPick)),
+        'emits [GameState] with homePick value other than userPick value '
+        'and status in progress '
+        'when GameHomePickedEvent is added and user pick value is "rock".',
+        build: () => GameBloc(gameRepository: repository),
+        seed: () => const GameState(
+          gamePicks: mockPicks,
+          userPick: rockPlayerPick,
+          status: GameStatus.progress,
+        ),
+        act: (bloc) => bloc.add(GameHomePickedEvent()),
         expect: () => [
           anyOf(
-            const HomePickState(scissorPlayerPick),
-            const HomePickState(rockPlayerPick),
-          )
+            const GameState(
+              gamePicks: mockPicks,
+              userPick: rockPlayerPick,
+              homePick: scissorPlayerPick,
+              status: GameStatus.progress,
+            ),
+            const GameState(
+              gamePicks: mockPicks,
+              userPick: rockPlayerPick,
+              homePick: paperPlayerPick,
+              status: GameStatus.progress,
+            ),
+          ),
         ],
       );
 
       blocTest<GameBloc, GameState>(
-        'emits [HomePickState(PlayerGamePick.scissor)] '
-        'or [HomePickState(PlayerGamePick.paper)] '
-        'after dispatch GameHomePickedEvent(PlayerGamePick.rock)',
-        build: GameBloc.new,
-        act: (bloc) => bloc.add(GameHomePickedEvent(rockPlayerPick)),
+        'emits [GameState] with homePick value other than userPick value '
+        'and status in progress '
+        'when GameHomePickedEvent is added and user pick value is "scissor".',
+        build: () => GameBloc(gameRepository: repository),
+        seed: () => const GameState(
+          gamePicks: mockPicks,
+          userPick: scissorPlayerPick,
+          status: GameStatus.progress,
+        ),
+        act: (bloc) => bloc.add(GameHomePickedEvent()),
         expect: () => [
           anyOf(
-            const HomePickState(scissorPlayerPick),
-            const HomePickState(paperPlayerPick),
-          )
+            const GameState(
+              gamePicks: mockPicks,
+              userPick: scissorPlayerPick,
+              homePick: paperPlayerPick,
+              status: GameStatus.progress,
+            ),
+            const GameState(
+              gamePicks: mockPicks,
+              userPick: scissorPlayerPick,
+              homePick: rockPlayerPick,
+              status: GameStatus.progress,
+            ),
+          ),
         ],
-      );
-
-      blocTest<GameBloc, GameState>(
-        'not emits [GameHomePickedEvent(PlayerGamePick.rock)] '
-        'after dispatch GameHomePickedEvent(PlayerGamePick.rock)',
-        build: GameBloc.new,
-        act: (bloc) => bloc.add(GameHomePickedEvent(rockPlayerPick)),
-        expect: () => [isNot(const HomePickState(rockPlayerPick))],
-      );
-
-      blocTest<GameBloc, GameState>(
-        'not emits [HomePickState(PlayerGamePick.paper)] '
-        'after dispatch GameHomePickedEvent(PlayerGamePick.paper)',
-        build: GameBloc.new,
-        act: (bloc) => bloc.add(GameHomePickedEvent(paperPlayerPick)),
-        expect: () => [isNot(const HomePickState(paperPlayerPick))],
-      );
-
-      blocTest<GameBloc, GameState>(
-        'not emits [HomePickState(PlayerGamePick.scissor)] '
-        'after dispatch GameHomePickedEvent(PlayerGamePick.scissor)',
-        build: GameBloc.new,
-        act: (bloc) => bloc.add(GameHomePickedEvent(scissorPlayerPick)),
-        expect: () => [isNot(const HomePickState(scissorPlayerPick))],
       );
     });
 
     group('GameFinishedEvent', () {
-      group('emits [GameFinishState(PlayerGamePick.rock)]', () {
-        blocTest<GameBloc, GameState>(
-          'when user pick "rock" and home pick "scissor"',
-          build: GameBloc.new,
-          act: (bloc) => bloc.add(
-            GameFinishedEvent(
-              userPick: rockPlayerPick,
-              homePick: scissorPlayerPick,
-            ),
-          ),
-          expect: () => [const GameFinishState(rockPlayerPick)],
-        );
-
-        blocTest<GameBloc, GameState>(
-          'when user pick "scissor" and home pick "rock"',
-          build: GameBloc.new,
-          act: (bloc) => bloc.add(
-            GameFinishedEvent(
-              userPick: scissorPlayerPick,
-              homePick: rockPlayerPick,
-            ),
-          ),
-          expect: () => [const GameFinishState(rockPlayerPick)],
-        );
-      });
-
-      group('emits [GameFinishState(PlayerGamePick.paper)]', () {
-        blocTest<GameBloc, GameState>(
-          'when user pick "paper" and home pick "rock"',
-          build: GameBloc.new,
-          act: (bloc) => bloc.add(
-            GameFinishedEvent(
+      group(
+        'emits [GameState] with isUserWin=true and status finished '
+        'when GameFinishedEvent is added',
+        () {
+          blocTest<GameBloc, GameState>(
+            'and user pick value is "paper"',
+            build: () => GameBloc(gameRepository: repository),
+            seed: () => const GameState(
+              gamePicks: mockPicks,
               userPick: paperPlayerPick,
               homePick: rockPlayerPick,
+              status: GameStatus.progress,
             ),
-          ),
-          expect: () => [const GameFinishState(paperPlayerPick)],
-        );
+            act: (bloc) => bloc.add(GameFinishedEvent()),
+            expect: () => const [
+              GameState(
+                gamePicks: mockPicks,
+                userPick: paperPlayerPick,
+                homePick: rockPlayerPick,
+                status: GameStatus.finish,
+                isUserWin: true,
+              )
+            ],
+          );
 
-        blocTest<GameBloc, GameState>(
-          'when user pick "rock" and home pick "paper"',
-          build: GameBloc.new,
-          act: (bloc) => bloc.add(
-            GameFinishedEvent(
+          blocTest<GameBloc, GameState>(
+            'and user pick value is "rock"',
+            build: () => GameBloc(gameRepository: repository),
+            seed: () => const GameState(
+              gamePicks: mockPicks,
               userPick: rockPlayerPick,
-              homePick: paperPlayerPick,
+              homePick: scissorPlayerPick,
+              status: GameStatus.progress,
             ),
-          ),
-          expect: () => [const GameFinishState(paperPlayerPick)],
-        );
-      });
+            act: (bloc) => bloc.add(GameFinishedEvent()),
+            expect: () => const [
+              GameState(
+                gamePicks: mockPicks,
+                userPick: rockPlayerPick,
+                homePick: scissorPlayerPick,
+                status: GameStatus.finish,
+                isUserWin: true,
+              )
+            ],
+          );
 
-      group('emits [GameFinishState(PlayerGamePick.scissor)]', () {
-        blocTest<GameBloc, GameState>(
-          'when user pick "scissor" and home pick "paper"',
-          build: GameBloc.new,
-          act: (bloc) => bloc.add(
-            GameFinishedEvent(
+          blocTest<GameBloc, GameState>(
+            'and user pick value is "scissor"',
+            build: () => GameBloc(gameRepository: repository),
+            seed: () => const GameState(
+              gamePicks: mockPicks,
               userPick: scissorPlayerPick,
               homePick: paperPlayerPick,
+              status: GameStatus.progress,
             ),
-          ),
-          expect: () => [const GameFinishState(scissorPlayerPick)],
-        );
+            act: (bloc) => bloc.add(GameFinishedEvent()),
+            expect: () => const [
+              GameState(
+                gamePicks: mockPicks,
+                userPick: scissorPlayerPick,
+                homePick: paperPlayerPick,
+                status: GameStatus.finish,
+                isUserWin: true,
+              )
+            ],
+          );
+        },
+      );
 
-        blocTest<GameBloc, GameState>(
-          'when user pick "paper" and home pick "scissor"',
-          build: GameBloc.new,
-          act: (bloc) => bloc.add(
-            GameFinishedEvent(
+      group(
+        'emits [GameState] with isUserWin=false and status finished '
+        'when GameFinishedEvent is added',
+        () {
+          blocTest<GameBloc, GameState>(
+            'and user pick value is "paper"',
+            build: () => GameBloc(gameRepository: repository),
+            seed: () => const GameState(
+              gamePicks: mockPicks,
               userPick: paperPlayerPick,
               homePick: scissorPlayerPick,
+              status: GameStatus.progress,
             ),
-          ),
-          expect: () => [const GameFinishState(scissorPlayerPick)],
-        );
-      });
+            act: (bloc) => bloc.add(GameFinishedEvent()),
+            expect: () => const [
+              GameState(
+                gamePicks: mockPicks,
+                userPick: paperPlayerPick,
+                homePick: scissorPlayerPick,
+                status: GameStatus.finish,
+                isUserWin: false,
+              )
+            ],
+          );
+
+          blocTest<GameBloc, GameState>(
+            'and user pick value is "rock"',
+            build: () => GameBloc(gameRepository: repository),
+            seed: () => const GameState(
+              gamePicks: mockPicks,
+              userPick: rockPlayerPick,
+              homePick: paperPlayerPick,
+              status: GameStatus.progress,
+            ),
+            act: (bloc) => bloc.add(GameFinishedEvent()),
+            expect: () => const [
+              GameState(
+                gamePicks: mockPicks,
+                userPick: rockPlayerPick,
+                homePick: paperPlayerPick,
+                status: GameStatus.finish,
+                isUserWin: false,
+              )
+            ],
+          );
+
+          blocTest<GameBloc, GameState>(
+            'and user pick value is "scissor"',
+            build: () => GameBloc(gameRepository: repository),
+            seed: () => const GameState(
+              gamePicks: mockPicks,
+              userPick: scissorPlayerPick,
+              homePick: rockPlayerPick,
+              status: GameStatus.progress,
+            ),
+            act: (bloc) => bloc.add(GameFinishedEvent()),
+            expect: () => const [
+              GameState(
+                gamePicks: mockPicks,
+                userPick: scissorPlayerPick,
+                homePick: rockPlayerPick,
+                status: GameStatus.finish,
+                isUserWin: false,
+              )
+            ],
+          );
+        },
+      );
     });
   });
 }
