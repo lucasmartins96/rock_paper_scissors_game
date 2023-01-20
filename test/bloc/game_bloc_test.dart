@@ -35,7 +35,7 @@ void main() {
     });
 
     test('initial state is GameInitialState', () {
-      expect(GameBloc().state, const GameInitialState(mockPicks));
+      expect(GameBloc(gameRepository: repository).state, const GameState());
     });
 
     blocTest<GameBloc, GameState>(
