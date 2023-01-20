@@ -2,7 +2,9 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:frontend_mentor_rock_paper_scissors/game/game.dart';
-import 'package:frontend_mentor_rock_paper_scissors/game/models/game_pick.dart';
+import 'package:mocktail/mocktail.dart';
+
+class MockRepository extends Mock implements GameRepositoryStatic {}
 
 void main() {
   const paperPlayerPick = GamePick(
