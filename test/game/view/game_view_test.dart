@@ -20,28 +20,10 @@ void main() {
   const gamePickButtonPaperKey = WidgetKeysConstants.gamePickPaperButton;
   const gamePickButtonRockKey = WidgetKeysConstants.gamePickRockButton;
   const gamePickButtonScissorKey = WidgetKeysConstants.gamePickScissorButton;
-  final paperPlayerPick = GamePick(
-    name: PlayerGamePick.paper,
-    iconPath: ImagesConstants.icons.paper,
-    gradientBorderFirstColor: ColorsConstants.gradient.paper.color.shade300,
-    gradientBorderSecondColor: ColorsConstants.gradient.paper.color.shade400,
-    buttonKey: gamePickButtonPaperKey,
-  );
-  final rockPlayerPick = GamePick(
-    name: PlayerGamePick.rock,
-    iconPath: ImagesConstants.icons.rock,
-    gradientBorderFirstColor: ColorsConstants.gradient.rock.color.shade400,
-    gradientBorderSecondColor: ColorsConstants.gradient.rock.color.shade500,
-    buttonKey: gamePickButtonRockKey,
-  );
-  final scissorPlayerPick = GamePick(
-    name: PlayerGamePick.scissor,
-    iconPath: ImagesConstants.icons.scissor,
-    gradientBorderFirstColor: ColorsConstants.gradient.scissors.color.shade400,
-    gradientBorderSecondColor: ColorsConstants.gradient.scissors.color.shade500,
-    buttonKey: gamePickButtonScissorKey,
-  );
-  final mockPicks = [paperPlayerPick, rockPlayerPick, scissorPlayerPick];
+  final mockPicks = GameRepositoryStatic().getAllPicks();
+  final mockPickPaper = mockPicks[0];
+  final mockPickScissor = mockPicks[1];
+  final mockPickRock = mockPicks[2];
   late GameBloc gameBloc;
   late ScoreCubit scoreCubit;
 
