@@ -1,14 +1,9 @@
-import 'dart:io';
-
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:frontend_mentor_rock_paper_scissors/config/colors_constants.dart';
-import 'package:frontend_mentor_rock_paper_scissors/config/images_constants.dart';
-import 'package:frontend_mentor_rock_paper_scissors/config/widget_keys_constants.dart';
+import 'package:frontend_mentor_rock_paper_scissors/config/config.dart';
 import 'package:frontend_mentor_rock_paper_scissors/game/game.dart';
-import 'package:frontend_mentor_rock_paper_scissors/game/models/models.dart';
 import 'package:frontend_mentor_rock_paper_scissors/score/score.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -54,317 +49,364 @@ void main() {
   });
 
   group('GameView', () {
-    testWidgets('renders initial Game view', (tester) async {
-      when(() => gameBloc.state).thenReturn(GameInitialState(mockPicks));
+    testWidgets('renders initial Game view without picks', (tester) async {
+      when(() => gameBloc.state).thenReturn(const GameState());
       when(() => scoreCubit.state).thenReturn(0);
+
       await pumpGameView(tester);
-      final rulesButton = find.widgetWithText(OutlinedButton, 'RULES');
-      final gameScore = find.widgetWithText(GameScore, '0');
+
+      expect(find.widgetWithText(RulesButton, 'RULES'), findsOneWidget);
+      expect(find.widgetWithText(GameScore, '0'), findsOneWidget);
+    });
+
+    testWidgets('renders initial Game view with picks', (tester) async {
+      when(() => gameBloc.state).thenReturn(GameState(gamePicks: mockPicks));
+      when(() => scoreCubit.state).thenReturn(0);
+
+      await pumpGameView(tester);
 
       expect(find.byKey(gamePickButtonPaperKey), findsOneWidget);
       expect(find.byKey(gamePickButtonRockKey), findsOneWidget);
       expect(find.byKey(gamePickButtonScissorKey), findsOneWidget);
-      expect(rulesButton, findsOneWidget);
-      expect(gameScore, findsOneWidget);
+      expect(find.widgetWithText(RulesButton, 'RULES'), findsOneWidget);
+      expect(find.widgetWithText(GameScore, '0'), findsOneWidget);
     });
 
-    testWidgets(
-      'show game rules in modal when click in button RULES',
-      (tester) async {
-        when(() => gameBloc.state).thenReturn(GameInitialState(mockPicks));
+    group('Rules modal', () {
+      testWidgets('should display when rules button is clicked',
+          (tester) async {
+        when(() => gameBloc.state).thenReturn(GameState(gamePicks: mockPicks));
         when(() => scoreCubit.state).thenReturn(0);
+
         await pumpGameView(tester);
-        final rulesButton = find.widgetWithText(OutlinedButton, 'RULES');
+
+        final rulesModal = find.byType(RulesModal);
+        final rulesButton = find.descendant(
+          of: find.byType(RulesButton),
+          matching: find.text('RULES'),
+        );
+
+        expect(rulesModal, findsNothing);
+        expect(rulesButton, findsOneWidget);
+
         await tester.tap(rulesButton);
-        await tester.pump();
-        final rulesModal = find.byKey(WidgetKeysConstants.rulesModal);
+        await tester.pumpAndSettle();
 
         expect(rulesModal, findsOneWidget);
-        expect(find.text('RULES'), findsWidgets);
+        expect(
+          find.descendant(of: rulesModal, matching: find.text('RULES')),
+          findsOneWidget,
+        );
         expect(
           find.byKey(WidgetKeysConstants.closeRulesModal),
           findsOneWidget,
         );
-        expect(
-          find.image(FileImage(File(ImagesConstants.rules))),
-          findsOneWidget,
-          skip: true,
-          reason: 'Find other svg dependency and discover how to test',
-        );
-      },
-    );
+      });
 
-    testWidgets(
-      'close rules modal when tap in close button and render initial Game view',
-      (tester) async {
-        when(() => gameBloc.state).thenReturn(GameInitialState(mockPicks));
+      testWidgets('should be dismissed when close button is clicked',
+          (tester) async {
+        when(() => gameBloc.state).thenReturn(GameState(gamePicks: mockPicks));
         when(() => scoreCubit.state).thenReturn(0);
 
-        final rulesButton = find.widgetWithText(OutlinedButton, 'RULES');
-        final gameScore = find.widgetWithText(GameScore, '0');
-        final rulesModal = find.byKey(WidgetKeysConstants.rulesModal);
-        final closeRulesModalButton = find.byKey(
-          WidgetKeysConstants.closeRulesModal,
-        );
-
         await pumpGameView(tester);
+
+        final rulesModal = find.byType(RulesModal);
+        final rulesButton = find.descendant(
+          of: find.byType(RulesButton),
+          matching: find.text('RULES'),
+        );
+        final closeModalButton =
+            find.byKey(WidgetKeysConstants.closeRulesModal);
+
+        expect(rulesModal, findsNothing);
+        expect(rulesButton, findsOneWidget);
+
         await tester.tap(rulesButton);
         await tester.pumpAndSettle();
-        await tester.tap(closeRulesModalButton);
+
+        expect(rulesModal, findsOneWidget);
+        expect(
+          find.descendant(of: rulesModal, matching: find.text('RULES')),
+          findsOneWidget,
+        );
+        expect(closeModalButton, findsOneWidget);
+
+        await tester.tap(closeModalButton);
         await tester.pumpAndSettle();
+
         expect(rulesModal, findsNothing);
-        expect(find.byKey(gamePickButtonPaperKey), findsOneWidget);
-        expect(find.byKey(gamePickButtonRockKey), findsOneWidget);
-        expect(find.byKey(gamePickButtonScissorKey), findsOneWidget);
-        expect(gameScore, findsOneWidget);
         expect(rulesButton, findsOneWidget);
-      },
-    );
-
-    testWidgets(
-      'render user pick and house empty pick after user pick rock ',
-      (tester) async {
-        final rockPickButton = find.byKey(gamePickButtonRockKey);
-        final paperPickButton = find.byKey(gamePickButtonPaperKey);
-        final scissorPickButton = find.byKey(gamePickButtonScissorKey);
-
-        whenListen(
-          gameBloc,
-          Stream.fromIterable(<GameState>[
-            GameInitialState(mockPicks),
-            UserPickState(rockPlayerPick),
-          ]),
-          initialState: GameInitialState(mockPicks),
-        );
-        when(() => scoreCubit.state).thenReturn(0);
-
-        await pumpGameView(tester);
-
-        expect(rockPickButton, findsOneWidget);
-        expect(paperPickButton, findsOneWidget);
-        expect(scissorPickButton, findsOneWidget);
-        expect(find.widgetWithText(OutlinedButton, 'RULES'), findsOneWidget);
-        expect(find.widgetWithText(GameScore, '0'), findsOneWidget);
-
-        await tester.tap(rockPickButton);
-        await tester.pumpAndSettle();
-
-        expect(scissorPickButton, findsNothing);
-        expect(paperPickButton, findsNothing);
-        expect(rockPickButton, findsOneWidget);
-        expect(find.text('YOU PICKED'), findsOneWidget);
-        expect(find.byKey(WidgetKeysConstants.emptyPick), findsOneWidget);
-        expect(find.text('THE HOUSE PICKED'), findsOneWidget);
-
-        // await expectLater(
-        //   gameBloc.stream,
-        //   emitsInOrder([
-        //     GameInitialState(mockPicks),
-        //     UserPickState(rockPlayerPick),
-        //   ]),
-        // );
-      },
-    );
-
-    testWidgets(
-      'render user pick and house empty pick after user pick paper ',
-      (tester) async {
-        final rockPickButton = find.byKey(gamePickButtonRockKey);
-        final paperPickButton = find.byKey(gamePickButtonPaperKey);
-        final scissorPickButton = find.byKey(gamePickButtonScissorKey);
-
-        whenListen(
-          gameBloc,
-          Stream.fromIterable(<GameState>[
-            GameInitialState(mockPicks),
-            UserPickState(paperPlayerPick),
-          ]),
-          initialState: GameInitialState(mockPicks),
-        );
-        when(() => scoreCubit.state).thenReturn(0);
-
-        await pumpGameView(tester);
-
-        expect(rockPickButton, findsOneWidget);
-        expect(paperPickButton, findsOneWidget);
-        expect(scissorPickButton, findsOneWidget);
-        expect(find.widgetWithText(OutlinedButton, 'RULES'), findsOneWidget);
-        expect(find.widgetWithText(GameScore, '0'), findsOneWidget);
-
-        await tester.tap(paperPickButton);
-        await tester.pumpAndSettle();
-
-        expect(rockPickButton, findsNothing);
-        expect(scissorPickButton, findsNothing);
-        expect(paperPickButton, findsOneWidget);
-        expect(find.text('YOU PICKED'), findsOneWidget);
-        expect(find.byKey(WidgetKeysConstants.emptyPick), findsOneWidget);
-        expect(find.text('THE HOUSE PICKED'), findsOneWidget);
-      },
-    );
-
-    testWidgets(
-      'render user pick and house empty pick after user pick scissor ',
-      (tester) async {
-        final rockPickButton = find.byKey(gamePickButtonRockKey);
-        final paperPickButton = find.byKey(gamePickButtonPaperKey);
-        final scissorPickButton = find.byKey(gamePickButtonScissorKey);
-
-        whenListen(
-          gameBloc,
-          Stream.fromIterable(<GameState>[
-            GameInitialState(mockPicks),
-            UserPickState(scissorPlayerPick),
-          ]),
-          initialState: GameInitialState(mockPicks),
-        );
-        when(() => scoreCubit.state).thenReturn(0);
-
-        await pumpGameView(tester);
-
-        expect(rockPickButton, findsOneWidget);
-        expect(paperPickButton, findsOneWidget);
-        expect(scissorPickButton, findsOneWidget);
-        expect(find.widgetWithText(OutlinedButton, 'RULES'), findsOneWidget);
-        expect(find.widgetWithText(GameScore, '0'), findsOneWidget);
-
-        await tester.tap(scissorPickButton);
-        await tester.pumpAndSettle();
-
-        expect(rockPickButton, findsNothing);
-        expect(paperPickButton, findsNothing);
-        expect(scissorPickButton, findsOneWidget);
-        expect(find.text('YOU PICKED'), findsOneWidget);
-        expect(find.byKey(WidgetKeysConstants.emptyPick), findsOneWidget);
-        expect(find.text('THE HOUSE PICKED'), findsOneWidget);
-      },
-    );
-
-    // TODO: TEST ALL SCENARIOS
-    testWidgets('render home pick after user pick', (tester) async {
-      final rockPickButton = find.byKey(gamePickButtonRockKey);
-      final paperPickButton = find.byKey(gamePickButtonPaperKey);
-      final scissorPickButton = find.byKey(gamePickButtonScissorKey);
-
-      whenListen(
-        gameBloc,
-        Stream.fromIterable(<GameState>[
-          UserPickState(rockPlayerPick),
-          HomePickState(
-            userGamePick: rockPlayerPick,
-            homeGamePick: scissorPlayerPick,
-          ),
-        ]),
-        initialState: UserPickState(rockPlayerPick),
-      );
-      when(() => scoreCubit.state).thenReturn(0);
-
-      await pumpGameView(tester);
-
-      expect(rockPickButton, findsOneWidget);
-      expect(paperPickButton, findsNothing);
-      expect(scissorPickButton, findsNothing);
-
-      await tester.pumpAndSettle(const Duration(seconds: 5));
-
-      expect(rockPickButton, findsOneWidget);
-      expect(scissorPickButton, findsOneWidget);
-      expect(paperPickButton, findsNothing);
+      });
     });
 
-    testWidgets(
-      'render finish game view with message "YOU LOSE" and decrease score',
-      (tester) async {
-        whenListen(
-          gameBloc,
-          Stream.fromIterable(<GameState>[
-            HomePickState(
-              userGamePick: paperPlayerPick,
-              homeGamePick: scissorPlayerPick,
+    group('Players picks board', () {
+      testWidgets(
+        "should be displayed user's pick after user chooses a pick",
+        (tester) async {
+          // when(() => gameBloc.state).thenReturn(
+          //   GameState(
+          //     gamePicks: mockPicks,
+          //     userPick: mockPickRock,
+          //     status: GameStatus.progress,
+          //   ),
+          // );
+          whenListen(
+            gameBloc,
+            Stream.fromIterable(<GameState>[
+              GameState(gamePicks: mockPicks),
+              GameState(
+                gamePicks: mockPicks,
+                userPick: mockPickRock,
+                status: GameStatus.progress,
+              ),
+            ]),
+            initialState: GameState(gamePicks: mockPicks),
+          );
+          when(() => scoreCubit.state).thenReturn(0);
+
+          await pumpGameView(tester);
+
+          final rockPickButton = find.byKey(gamePickButtonRockKey);
+          final paperPickButton = find.byKey(gamePickButtonPaperKey);
+          final scissorPickButton = find.byKey(gamePickButtonScissorKey);
+          final rulesButton = find.widgetWithText(RulesButton, 'RULES');
+          final score = find.widgetWithText(GameScore, '0');
+
+          expect(rockPickButton, findsOneWidget);
+          expect(paperPickButton, findsOneWidget);
+          expect(scissorPickButton, findsOneWidget);
+          expect(rulesButton, findsOneWidget);
+          expect(score, findsOneWidget);
+
+          await tester.tap(rockPickButton);
+          await tester.pumpAndSettle(const Duration(seconds: 2));
+
+          expect(rockPickButton, findsOneWidget);
+          expect(paperPickButton, findsNothing);
+          expect(scissorPickButton, findsNothing);
+          expect(find.byKey(WidgetKeysConstants.emptyPick), findsOneWidget);
+          expect(rulesButton, findsOneWidget);
+          expect(score, findsOneWidget);
+          // verify(() => gameBloc.add(GameUserPickedEvent(mockPickRock)))
+          //     .called(1);
+        },
+      );
+
+      testWidgets(
+        "should be displayed home's pick after user chooses a pick",
+        (tester) async {
+          whenListen(
+            gameBloc,
+            Stream.fromIterable([
+              GameState(
+                gamePicks: mockPicks,
+                userPick: mockPickRock,
+                status: GameStatus.progress,
+              ),
+              GameState(
+                gamePicks: mockPicks,
+                userPick: mockPickRock,
+                homePick: mockPickScissor,
+                status: GameStatus.progress,
+              ),
+            ]),
+            initialState: GameState(
+              gamePicks: mockPicks,
+              userPick: mockPickRock,
+              status: GameStatus.progress,
             ),
-            GameFinishState(
-              userGamePick: paperPlayerPick,
-              homeGamePick: scissorPlayerPick,
-              isUserWin: false,
+          );
+          when(() => scoreCubit.state).thenReturn(0);
+
+          await pumpGameView(tester);
+
+          final rockPickButton = find.byKey(gamePickButtonRockKey);
+          final paperPickButton = find.byKey(gamePickButtonPaperKey);
+          final scissorPickButton = find.byKey(gamePickButtonScissorKey);
+          final rulesButton = find.widgetWithText(RulesButton, 'RULES');
+          final score = find.widgetWithText(GameScore, '0');
+
+          expect(rockPickButton, findsOneWidget);
+          expect(paperPickButton, findsNothing);
+          expect(scissorPickButton, findsNothing);
+          expect(rulesButton, findsOneWidget);
+          expect(score, findsOneWidget);
+
+          await tester.pumpAndSettle(const Duration(seconds: 2));
+
+          expect(rockPickButton, findsOneWidget);
+          expect(scissorPickButton, findsOneWidget);
+          expect(paperPickButton, findsNothing);
+          expect(find.byKey(WidgetKeysConstants.emptyPick), findsNothing);
+          expect(rulesButton, findsOneWidget);
+          expect(score, findsOneWidget);
+          // verify(() => gameBloc.add(GameHomePickedEvent())).called(1);
+        },
+      );
+    });
+
+    group('Game Finished', () {
+      testWidgets(
+        'should display YOU WIN, button PLAY AGAIN and increase score',
+        (tester) async {
+          whenListen(
+            gameBloc,
+            Stream.fromIterable([
+              GameState(
+                gamePicks: mockPicks,
+                userPick: mockPickRock,
+                homePick: mockPickScissor,
+                status: GameStatus.progress,
+              ),
+              GameState(
+                gamePicks: mockPicks,
+                userPick: mockPickRock,
+                homePick: mockPickScissor,
+                status: GameStatus.finish,
+                isUserWin: true,
+              ),
+            ]),
+            initialState: GameState(
+              gamePicks: mockPicks,
+              userPick: mockPickRock,
+              homePick: mockPickScissor,
+              status: GameStatus.progress,
             ),
-          ]),
-          initialState: HomePickState(
-            userGamePick: paperPlayerPick,
-            homeGamePick: scissorPlayerPick,
-          ),
-        );
-        when(() => scoreCubit.stream)
-            .thenAnswer((invocation) => Stream.fromIterable([1, 0]));
-        when(() => scoreCubit.state).thenReturn(1);
-        when(() => scoreCubit.decrement()).thenReturn(null);
+          );
+          when(() => scoreCubit.stream)
+              .thenAnswer((_) => Stream.fromIterable([1, 2]));
+          when(() => scoreCubit.state).thenReturn(1);
+          when(() => scoreCubit.increment()).thenReturn(null);
 
-        await pumpGameView(tester);
+          await pumpGameView(tester);
 
-        expect(find.byKey(gamePickButtonRockKey), findsNothing);
-        expect(find.byKey(gamePickButtonPaperKey), findsOneWidget);
-        expect(find.byKey(gamePickButtonScissorKey), findsOneWidget);
-        expect(find.widgetWithText(GameScore, '1'), findsOneWidget);
+          expect(find.byKey(gamePickButtonRockKey), findsOneWidget);
+          expect(find.byKey(gamePickButtonScissorKey), findsOneWidget);
+          expect(find.byKey(gamePickButtonPaperKey), findsNothing);
+          expect(find.widgetWithText(RulesButton, 'RULES'), findsOneWidget);
+          expect(find.widgetWithText(GameScore, '1'), findsOneWidget);
 
-        await tester.pumpAndSettle(const Duration(seconds: 5));
+          await tester.pumpAndSettle();
 
-        expect(find.text('YOU LOSE'), findsOneWidget);
-        expect(find.byKey(gamePickButtonRockKey), findsNothing);
-        expect(find.byKey(gamePickButtonPaperKey), findsOneWidget);
-        expect(find.byKey(gamePickButtonScissorKey), findsOneWidget);
-        expect(
-          find.widgetWithText(ElevatedButton, 'PLAY AGAIN'),
-          findsOneWidget,
-        );
-        expect(find.widgetWithText(GameScore, '1'), findsNothing);
-        expect(find.widgetWithText(GameScore, '0'), findsOneWidget);
-        verify(() => scoreCubit.decrement()).called(1);
-      },
-    );
+          expect(find.text('YOU WIN'), findsOneWidget);
+          expect(
+            find.widgetWithText(ElevatedButton, 'PLAY AGAIN'),
+            findsOneWidget,
+          );
+          expect(find.widgetWithText(GameScore, '2'), findsOneWidget);
+          expect(find.widgetWithText(GameScore, '1'), findsNothing);
+          verify(() => scoreCubit.increment()).called(1);
+        },
+      );
 
-    testWidgets(
-      'render finish game view with message "YOU WIN" and increase score',
-      (tester) async {
-        whenListen(
-          gameBloc,
-          Stream.fromIterable(<GameState>[
-            HomePickState(
-              userGamePick: rockPlayerPick,
-              homeGamePick: scissorPlayerPick,
+      testWidgets(
+        'should display YOU LOSE, button PLAY AGAIN and decrease score',
+        (tester) async {
+          whenListen(
+            gameBloc,
+            Stream.fromIterable([
+              GameState(
+                gamePicks: mockPicks,
+                userPick: mockPickPaper,
+                homePick: mockPickScissor,
+                status: GameStatus.progress,
+              ),
+              GameState(
+                gamePicks: mockPicks,
+                userPick: mockPickPaper,
+                homePick: mockPickScissor,
+                status: GameStatus.finish,
+                isUserWin: false,
+              ),
+            ]),
+            initialState: GameState(
+              gamePicks: mockPicks,
+              userPick: mockPickPaper,
+              homePick: mockPickScissor,
+              status: GameStatus.progress,
             ),
-            GameFinishState(
-              userGamePick: rockPlayerPick,
-              homeGamePick: scissorPlayerPick,
+          );
+          when(() => scoreCubit.stream)
+              .thenAnswer((_) => Stream.fromIterable([1, 0]));
+          when(() => scoreCubit.state).thenReturn(1);
+          when(() => scoreCubit.decrement()).thenReturn(null);
+
+          await pumpGameView(tester);
+
+          expect(find.byKey(gamePickButtonPaperKey), findsOneWidget);
+          expect(find.byKey(gamePickButtonScissorKey), findsOneWidget);
+          expect(find.byKey(gamePickButtonRockKey), findsNothing);
+          expect(find.widgetWithText(RulesButton, 'RULES'), findsOneWidget);
+          expect(find.widgetWithText(GameScore, '1'), findsOneWidget);
+
+          await tester.pumpAndSettle();
+
+          expect(find.text('YOU LOSE'), findsOneWidget);
+          expect(
+            find.widgetWithText(ElevatedButton, 'PLAY AGAIN'),
+            findsOneWidget,
+          );
+          expect(find.widgetWithText(GameScore, '0'), findsOneWidget);
+          expect(find.widgetWithText(GameScore, '1'), findsNothing);
+          verify(() => scoreCubit.decrement()).called(1);
+        },
+      );
+
+      testWidgets(
+        'should restart game when click in PLAY AGAIN',
+        (tester) async {
+          whenListen(
+            gameBloc,
+            Stream.fromIterable([
+              GameState(
+                gamePicks: mockPicks,
+                userPick: mockPickRock,
+                homePick: mockPickScissor,
+                status: GameStatus.finish,
+                isUserWin: true,
+              ),
+              GameState(gamePicks: mockPicks),
+            ]),
+            initialState: GameState(
+              gamePicks: mockPicks,
+              userPick: mockPickRock,
+              homePick: mockPickScissor,
+              status: GameStatus.finish,
               isUserWin: true,
             ),
-          ]),
-          initialState: HomePickState(
-            userGamePick: rockPlayerPick,
-            homeGamePick: scissorPlayerPick,
-          ),
-        );
-        when(() => scoreCubit.stream)
-            .thenAnswer((invocation) => Stream.fromIterable([1, 2]));
-        when(() => scoreCubit.state).thenReturn(1);
-        when(() => scoreCubit.increment()).thenReturn(null);
+          );
+          when(() => scoreCubit.state).thenReturn(1);
 
-        await pumpGameView(tester);
+          await pumpGameView(tester);
 
-        expect(find.byKey(gamePickButtonPaperKey), findsNothing);
-        expect(find.byKey(gamePickButtonRockKey), findsOneWidget);
-        expect(find.byKey(gamePickButtonScissorKey), findsOneWidget);
-        expect(find.widgetWithText(GameScore, '1'), findsOneWidget);
+          final rockPickButton = find.byKey(gamePickButtonRockKey);
+          final paperPickButton = find.byKey(gamePickButtonPaperKey);
+          final scissorPickButton = find.byKey(gamePickButtonScissorKey);
+          final rulesButton = find.widgetWithText(RulesButton, 'RULES');
+          final score = find.widgetWithText(GameScore, '1');
+          final playAgainButton = find.widgetWithText(
+            ElevatedButton,
+            'PLAY AGAIN',
+          );
 
-        await tester.pumpAndSettle(const Duration(seconds: 5));
+          expect(rockPickButton, findsOneWidget);
+          expect(scissorPickButton, findsOneWidget);
+          expect(paperPickButton, findsNothing);
+          expect(rulesButton, findsOneWidget);
+          expect(score, findsOneWidget);
+          expect(playAgainButton, findsOneWidget);
 
-        expect(find.text('YOU WIN'), findsOneWidget);
-        expect(
-          find.widgetWithText(ElevatedButton, 'PLAY AGAIN'),
-          findsOneWidget,
-        );
-        expect(find.widgetWithText(GameScore, '2'), findsOneWidget);
-        expect(find.widgetWithText(GameScore, '1'), findsNothing);
-        verify(() => scoreCubit.increment()).called(1);
-      },
-    );
+          await tester.tap(playAgainButton);
+          await tester.pump();
+
+          expect(rockPickButton, findsOneWidget);
+          expect(scissorPickButton, findsOneWidget);
+          expect(paperPickButton, findsOneWidget);
+          expect(rulesButton, findsOneWidget);
+          expect(score, findsOneWidget);
+          expect(playAgainButton, findsNothing);
+        },
+      );
+    });
   });
 }
