@@ -1,5 +1,4 @@
 import 'package:frontend_mentor_rock_paper_scissors/common.dart';
-import 'package:frontend_mentor_rock_paper_scissors/config/config.dart';
 import 'package:frontend_mentor_rock_paper_scissors/game/game.dart';
 
 class RulesButton extends StatelessWidget {
@@ -14,9 +13,7 @@ class RulesButton extends StatelessWidget {
           showModalBottomSheet<void>(
             context: context,
             isScrollControlled: true,
-            builder: (_) => const RulesModal(
-              key: WidgetKeysConstants.rulesModal,
-            ),
+            builder: (_) => const RulesModal(),
           );
         },
         style: OutlinedButton.styleFrom(
