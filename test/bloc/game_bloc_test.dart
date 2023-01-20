@@ -28,6 +28,12 @@ void main() {
   const mockPicks = [paperPlayerPick, rockPlayerPick, scissorPlayerPick];
 
   group('GameBloc', () {
+    late GameRepository repository;
+
+    setUpAll(() {
+      repository = MockRepository();
+    });
+
     test('initial state is GameInitialState', () {
       expect(GameBloc().state, const GameInitialState(mockPicks));
     });
