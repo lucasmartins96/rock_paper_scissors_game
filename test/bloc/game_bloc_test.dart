@@ -8,19 +8,19 @@ class MockRepository extends Mock implements GameRepositoryStatic {}
 
 void main() {
   const paperPlayerPick = GamePick(
-    name: PlayerGamePick.paper,
+    pick: PlayerGamePicks.paper,
     iconPath: '',
     gradientBorderFirstColor: Colors.black,
     gradientBorderSecondColor: Colors.white,
   );
   const rockPlayerPick = GamePick(
-    name: PlayerGamePick.rock,
+    pick: PlayerGamePicks.rock,
     iconPath: '',
     gradientBorderFirstColor: Colors.black,
     gradientBorderSecondColor: Colors.white,
   );
   const scissorPlayerPick = GamePick(
-    name: PlayerGamePick.scissor,
+    pick: PlayerGamePicks.scissor,
     iconPath: '',
     gradientBorderFirstColor: Colors.black,
     gradientBorderSecondColor: Colors.white,
