@@ -38,8 +38,10 @@ class GameState extends Equatable {
 
   @override
   List<Object?> get props => [
+        gamePicks,
         userPick?.pick.name,
         homePick?.pick.name,
         isUserWin,
+        status,
       ];
 }
