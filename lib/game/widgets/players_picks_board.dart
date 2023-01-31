@@ -6,6 +6,48 @@ class PlayersPicksBoard extends StatefulWidget {
   const PlayersPicksBoard({super.key});
 
   @override
+  State<PlayersPicksBoard> createState() => _PlayersPicksBoardState();
+}
+
+class _PlayersPicksBoardState extends State<PlayersPicksBoard>
+    with TickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeAnimations();
+  }
+
+  void _initializeAnimations() {
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.linear,
+    )..addStatusListener(_handleStatusListener);
+  }
+
+  void _handleStatusListener(AnimationStatus status) {
+    if (status == AnimationStatus.completed) {
+      final isUserWin = context.read<GameBloc>().state.isUserWin;
+
+      isUserWin != null && isUserWin
+          ? context.read<ScoreCubit>().increment()
+          : context.read<ScoreCubit>().decrement();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final state = context.watch<GameBloc>().state;
     final userPick = state.userPick;
