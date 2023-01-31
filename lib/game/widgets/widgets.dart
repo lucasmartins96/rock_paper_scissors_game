@@ -1,6 +1,7 @@
-export 'animated_game_result.dart';
-export 'game_pick_button.dart';
-export 'game_pick_empty.dart';
+export 'game_pick_button/game_pick_button.dart';
+export 'game_pick_button/game_pick_button_border_doppler.dart';
+export 'game_pick_button/game_pick_button_padding.dart';
+export 'game_pick_button/game_pick_empty.dart';
 export 'game_picks_board.dart';
 export 'header.dart';
 export 'home_pick.dart';

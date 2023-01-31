@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:frontend_mentor_rock_paper_scissors/game/widgets/game_pick_button/game_pick_button_base.dart';
 
 class GamePickButton extends StatelessWidget {
   const GamePickButton({
@@ -20,28 +21,20 @@ class GamePickButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: action,
-      child: Container(
-        width: circleSize,
-        height: circleSize,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
+      child: GamePickButtonBase(
+        containerBorderDecoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [gradientFirstColor, gradientSecondColor],
           ),
+          shape: BoxShape.circle,
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Container(
-            padding: const EdgeInsets.all(24),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-            ),
-            child: SvgPicture.asset(pickImagePath),
-          ),
+        containerPickImageDecoration: const BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
         ),
+        pickImage: SvgPicture.asset(pickImagePath),
       ),
     );
   }
