@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend_mentor_rock_paper_scissors/common.dart';
 import 'package:frontend_mentor_rock_paper_scissors/game/game.dart';
 
-class PlayersPicksBoard extends StatelessWidget {
+class PlayersPicksBoard extends StatefulWidget {
   const PlayersPicksBoard({super.key});
 
   @override
