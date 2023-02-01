@@ -1,108 +1,83 @@
 import 'dart:math';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend_mentor_rock_paper_scissors/config/colors_constants.dart';
-import 'package:frontend_mentor_rock_paper_scissors/config/images_constants.dart';
-import 'package:frontend_mentor_rock_paper_scissors/config/widget_keys_constants.dart';
-import 'package:frontend_mentor_rock_paper_scissors/game/models/game_pick.dart';
+import 'package:frontend_mentor_rock_paper_scissors/game/game.dart';
 import 'package:meta/meta.dart';
 
 part 'game_event.dart';
 part 'game_state.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
-  GameBloc() : super(GameInitialState(gameInitialPicks)) {
+  GameBloc({GameRepository? gameRepository})
+      : _gameRepository = gameRepository ?? GameRepositoryStatic(),
+        super(const GameState()) {
     on<GameStartedEvent>(_onStarted);
     on<GameUserPickedEvent>(_onUserPick);
     on<GameHomePickedEvent>(_onHomePick);
     on<GameFinishedEvent>(_onFinished);
   }
 
-  static final List<GamePick> gameInitialPicks = [
-    GamePick(
-      name: PlayerGamePick.paper,
-      iconPath: ImagesConstants.icons.paper,
-      gradientBorderFirstColor: ColorsConstants.gradient.paper.color.shade300,
-      gradientBorderSecondColor: ColorsConstants.gradient.paper.color.shade400,
-      buttonKey: WidgetKeysConstants.gamePickPaperButton,
-    ),
-    GamePick(
-      name: PlayerGamePick.scissor,
-      iconPath: ImagesConstants.icons.scissor,
-      gradientBorderFirstColor:
-          ColorsConstants.gradient.scissors.color.shade400,
-      gradientBorderSecondColor:
-          ColorsConstants.gradient.scissors.color.shade500,
-      buttonKey: WidgetKeysConstants.gamePickScissorButton,
-    ),
-    GamePick(
-      name: PlayerGamePick.rock,
-      iconPath: ImagesConstants.icons.rock,
-      gradientBorderFirstColor: ColorsConstants.gradient.rock.color.shade400,
-      gradientBorderSecondColor: ColorsConstants.gradient.rock.color.shade500,
-      buttonKey: WidgetKeysConstants.gamePickRockButton,
-    ),
-  ];
+  final GameRepository _gameRepository;
 
   void _onStarted(GameStartedEvent event, Emitter<GameState> emit) {
-    emit(GameInitialState(gameInitialPicks));
+    if (state.status == GameStatus.finish) {
+      return emit(state.reset());
+    }
+
+    final initialPicks = _gameRepository.getAllPicks();
+    emit(state.copyWith(gamePicks: initialPicks));
   }
 
   void _onUserPick(GameUserPickedEvent event, Emitter<GameState> emit) {
-    emit(UserPickState(event.userPick));
+    emit(
+      state.copyWith(userPick: event.userPick, status: GameStatus.progress),
+    );
   }
 
   void _onHomePick(GameHomePickedEvent event, Emitter<GameState> emit) {
-    final userPick = event.userPick;
+    final userPick = state.userPick;
     var homePick = _getHomeGamePick();
 
-    while (userPick.name.code == homePick.name.code) {
+    while (userPick == homePick) {
       homePick = _getHomeGamePick();
     }
 
-    emit(HomePickState(userGamePick: userPick, homeGamePick: homePick));
+    emit(state.copyWith(homePick: homePick));
   }
 
   GamePick _getHomeGamePick() {
     const picks = 3;
     const maxRange = 10;
     final randomNumber = Random().nextInt(maxRange) % picks;
-    return gameInitialPicks.elementAt(randomNumber);
+    return state.gamePicks.elementAt(randomNumber);
   }
 
   void _onFinished(GameFinishedEvent event, Emitter<GameState> emit) {
     final playerGamePick =
-        _getWinnerPick(event.userPick.name, event.homePick.name);
-    final winnerPick = gameInitialPicks
-        .singleWhere((gamePick) => playerGamePick == gamePick.name);
+        _getWinnerPick(state.userPick!.pick, state.homePick!.pick);
+    final winnerPick = state.gamePicks
+        .singleWhere((gamePick) => playerGamePick == gamePick.pick);
+    final isUserWin = winnerPick == state.userPick;
 
-    final isUserWin = winnerPick == event.userPick;
-
-    emit(
-      GameFinishState(
-        userGamePick: event.userPick,
-        homeGamePick: event.homePick,
-        isUserWin: isUserWin,
-      ),
-    );
+    emit(state.copyWith(isUserWin: isUserWin, status: GameStatus.finish));
   }
 
-  PlayerGamePick _getWinnerPick(
-    PlayerGamePick userPick,
-    PlayerGamePick homePick,
+  PlayerGamePicks _getWinnerPick(
+    PlayerGamePicks userPick,
+    PlayerGamePicks homePick,
   ) {
     const userPickWeight = 1;
     var homePickWeight = 0;
 
     switch (userPick) {
-      case PlayerGamePick.paper:
-        homePickWeight = homePick == PlayerGamePick.scissor ? 2 : 0;
+      case PlayerGamePicks.paper:
+        homePickWeight = homePick == PlayerGamePicks.scissor ? 2 : 0;
         break;
-      case PlayerGamePick.rock:
-        homePickWeight = homePick == PlayerGamePick.paper ? 2 : 0;
+      case PlayerGamePicks.rock:
+        homePickWeight = homePick == PlayerGamePicks.paper ? 2 : 0;
         break;
-      case PlayerGamePick.scissor:
-        homePickWeight = homePick == PlayerGamePick.rock ? 2 : 0;
+      case PlayerGamePicks.scissor:
+        homePickWeight = homePick == PlayerGamePicks.rock ? 2 : 0;
         break;
     }
 

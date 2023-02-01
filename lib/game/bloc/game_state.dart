@@ -1,79 +1,47 @@
 part of 'game_bloc.dart';
 
-enum PlayerGamePick {
-  paper(0, 'paper'),
-  rock(1, 'rock'),
-  scissor(2, 'scissor');
+enum GameStatus { start, progress, finish }
 
-  const PlayerGamePick(this.code, this.name);
-
-  final int code;
-  final String name;
-
-  static PlayerGamePick getByCode(int code) {
-    return PlayerGamePick.values
-        .firstWhere((gamePick) => gamePick.code == code);
-  }
-}
-
-@immutable
-abstract class GameState extends Equatable {
-  const GameState(this.playerGamePick);
-
-  final GamePick? playerGamePick;
-
-  @override
-  List<Object?> get props => [playerGamePick];
-}
-
-class GameInitialState extends GameState {
-  const GameInitialState(this.gameInitialPicks) : super(null);
-
-  final List<GamePick> gameInitialPicks;
-}
-
-class UserPickState extends GameState {
-  const UserPickState(super.playerGamePick);
-}
-
-class HomePickState extends GameState {
-  const HomePickState({required this.userGamePick, required this.homeGamePick})
-      : super(null);
-
-  final GamePick userGamePick;
-  final GamePick homeGamePick;
-}
-
-class GameFinishState extends GameState {
-  const GameFinishState({
-    required this.userGamePick,
-    required this.homeGamePick,
-    required this.isUserWin,
-  }) : super(null);
-
-  final GamePick userGamePick;
-  final GamePick homeGamePick;
-  final bool isUserWin;
-}
-
-// class GameHousePicked extends GameState {}
-
-// class GameComplete extends GameState {}
-
-/*
-
+// @immutable
 class GameState extends Equatable {
+  const GameState({
+    this.gamePicks = const [],
+    this.userPick,
+    this.homePick,
+    this.isUserWin,
+    this.status = GameStatus.start,
+  });
+
+  final List<GamePick> gamePicks;
+  final GamePick? userPick;
+  final GamePick? homePick;
+  final bool? isUserWin;
   final GameStatus status;
-  final PlayerGamePick userPick;
-  final PlayerGamePick homePick;
-  
+
+  GameState copyWith({
+    List<GamePick>? gamePicks,
+    GamePick? userPick,
+    GamePick? homePick,
+    bool? isUserWin,
+    GameStatus? status,
+  }) {
+    return GameState(
+      gamePicks: gamePicks ?? this.gamePicks,
+      userPick: userPick ?? this.userPick,
+      homePick: homePick ?? this.homePick,
+      isUserWin: isUserWin ?? this.isUserWin,
+      status: status ?? this.status,
+    );
+  }
+
+  GameState reset() => GameState(gamePicks: gamePicks);
 
   @override
-  List<Object?> get props => throw UnimplementedError();
-} */
-
-/* 
-  initial
-  userPick
-  homePick
- */
+  List<Object?> get props => [
+        gamePicks,
+        userPick?.pick.name,
+        homePick?.pick.name,
+        isUserWin,
+        status,
+      ];
+}

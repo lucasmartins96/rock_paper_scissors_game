@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:frontend_mentor_rock_paper_scissors/config/colors_constants.dart';
-import 'package:frontend_mentor_rock_paper_scissors/config/images_constants.dart';
-import 'package:frontend_mentor_rock_paper_scissors/config/widget_keys_constants.dart';
+import 'package:frontend_mentor_rock_paper_scissors/config/config.dart';
 
 class RulesModal extends StatelessWidget {
-  const RulesModal({super.key});
+  const RulesModal() : super(key: WidgetKeysConstants.rulesModal);
 
   @override
   Widget build(BuildContext context) {
