@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:frontend_mentor_rock_paper_scissors/common.dart';
 import 'package:frontend_mentor_rock_paper_scissors/game/widgets/game_pick_button/game_pick_button_base.dart';
 
 class GamePickButton extends StatelessWidget {
@@ -9,13 +9,14 @@ class GamePickButton extends StatelessWidget {
     required this.gradientFirstColor,
     required this.gradientSecondColor,
     this.action,
+    this.circleSize,
   });
 
   final String pickImagePath;
   final Color gradientFirstColor;
   final Color gradientSecondColor;
   final VoidCallback? action;
-  static const double circleSize = 128;
+  final double? circleSize;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +36,7 @@ class GamePickButton extends StatelessWidget {
           shape: BoxShape.circle,
         ),
         pickImage: SvgPicture.asset(pickImagePath),
+        circleSize: circleSize,
       ),
     );
   }

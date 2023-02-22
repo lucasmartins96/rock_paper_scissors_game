@@ -1,4 +1,3 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend_mentor_rock_paper_scissors/common.dart';
 import 'package:frontend_mentor_rock_paper_scissors/game/game.dart';
 
@@ -7,6 +6,8 @@ class PageStepsWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDesktop = LayoutProvider.of(context).isDesktop;
+
     return BlocConsumer<GameBloc, GameState>(
       listener: (context, state) {
         if (state.status == GameStatus.progress && state.homePick == null) {
@@ -26,7 +27,9 @@ class PageStepsWrapper extends StatelessWidget {
         if (state.status == GameStatus.start) {
           return GamePicksBoard(gamePicks: state.gamePicks);
         }
-        return const PlayersPicksBoard();
+        return isDesktop
+            ? const PlayersPicksBoardDesktop()
+            : const PlayersPicksBoardMobile();
       },
     );
   }

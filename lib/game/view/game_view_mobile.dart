@@ -2,14 +2,14 @@ import 'package:frontend_mentor_rock_paper_scissors/common.dart';
 import 'package:frontend_mentor_rock_paper_scissors/config/config.dart';
 import 'package:frontend_mentor_rock_paper_scissors/game/game.dart';
 
-class GameView extends StatefulWidget {
-  const GameView({super.key});
+class GameViewMobile extends StatefulWidget {
+  const GameViewMobile({super.key});
 
   @override
-  State<GameView> createState() => _GameViewState();
+  State<GameViewMobile> createState() => _GameViewMobileState();
 }
 
-class _GameViewState extends State<GameView> {
+class _GameViewMobileState extends State<GameViewMobile> {
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(

@@ -1,17 +1,17 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend_mentor_rock_paper_scissors/common.dart';
 import 'package:frontend_mentor_rock_paper_scissors/config/config.dart';
 import 'package:frontend_mentor_rock_paper_scissors/game/game.dart';
 import 'package:frontend_mentor_rock_paper_scissors/score/score.dart';
 
-class PlayersPicksBoard extends StatefulWidget {
-  const PlayersPicksBoard({super.key});
+class PlayersPicksBoardMobile extends StatefulWidget {
+  const PlayersPicksBoardMobile({super.key});
 
   @override
-  State<PlayersPicksBoard> createState() => _PlayersPicksBoardState();
+  State<PlayersPicksBoardMobile> createState() =>
+      _PlayersPicksBoardMobileState();
 }
 
-class _PlayersPicksBoardState extends State<PlayersPicksBoard>
+class _PlayersPicksBoardMobileState extends State<PlayersPicksBoardMobile>
     with TickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _animation;
@@ -115,8 +115,9 @@ class _PlayersPicksBoardState extends State<PlayersPicksBoard>
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
                               shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8)),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(8),
+                                ),
                               ),
                             ),
                             child: const Padding(
@@ -171,7 +172,7 @@ class _PlayersPicksBoardState extends State<PlayersPicksBoard>
     );
   }
 
-  Padding _buildUserPickName(String pickName) {
+  Widget _buildUserPickName(String pickName) {
     return Padding(
       padding: const EdgeInsets.only(top: 20),
       child: Text(
@@ -203,15 +204,17 @@ class _PlayersPicksBoardState extends State<PlayersPicksBoard>
     if (state.isUserWin == null) {
       return '';
     }
+
     return state.isUserWin! ? 'YOU WIN' : 'YOU LOSE';
   }
 
-  AnimatedBuilder _buildPickButtonDopplerBorder(GamePick? userPick) {
+  Widget _buildPickButtonDopplerBorder(GamePick? userPick) {
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
         return GamePickButtonDopplerBorder(
-          pickImagePath: userPick!.iconPath,
+          key: userPick!.buttonKey,
+          pickImagePath: userPick.iconPath,
           gradientFirstColor: userPick.gradientBorderFirstColor,
           gradientSecondColor: userPick.gradientBorderSecondColor,
         );
