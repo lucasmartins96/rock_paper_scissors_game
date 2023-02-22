@@ -35,7 +35,7 @@ void main() {
             BlocProvider.value(value: gameBloc),
             BlocProvider.value(value: scoreCubit)
           ],
-          child: const GameView(),
+          child: const GameViewDesktop(),
         ),
       ),
     );
@@ -44,7 +44,7 @@ void main() {
   group('GamePage', () {
     testWidgets('renders GameView', (tester) async {
       await tester.pumpWidget(const MaterialApp(home: GamePage()));
-      expect(find.byType(GameView), findsOneWidget);
+      expect(find.byType(GameViewDesktop), findsOneWidget);
     });
   });
 

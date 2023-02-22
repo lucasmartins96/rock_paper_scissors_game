@@ -1,4 +1,5 @@
 import 'package:frontend_mentor_rock_paper_scissors/common.dart';
+import 'package:frontend_mentor_rock_paper_scissors/game/game.dart';
 
 class GamePickButtonBase extends StatelessWidget {
   const GamePickButtonBase({
@@ -6,27 +7,29 @@ class GamePickButtonBase extends StatelessWidget {
     required this.containerBorderDecoration,
     this.containerPickImageDecoration,
     this.pickImage,
+    this.circleSize,
   });
 
   final Decoration containerBorderDecoration;
   final Decoration? containerPickImageDecoration;
   final Widget? pickImage;
-  static const double circleSize = 128;
+  final double? circleSize;
 
   @override
   Widget build(BuildContext context) {
+    final isDesktop = LayoutProvider.of(context).isDesktop;
+    final firstContainerPadding = isDesktop ? (circleSize! / 7.8) : 16.0;
+    final secondContainerPadding = isDesktop ? (circleSize! / 5.2) : 24.0;
+
     return Container(
-      width: circleSize,
-      height: circleSize,
+      width: circleSize ?? 128,
+      height: circleSize ?? 128,
       decoration: containerBorderDecoration,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Container(
-          // TODO: Definir um tamanho aqui
-          padding: const EdgeInsets.all(24),
-          decoration: containerPickImageDecoration,
-          child: pickImage,
-        ),
+      padding: EdgeInsets.all(firstContainerPadding),
+      child: Container(
+        padding: EdgeInsets.all(secondContainerPadding),
+        decoration: containerPickImageDecoration,
+        child: pickImage,
       ),
     );
   }

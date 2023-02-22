@@ -8,14 +8,15 @@ class HomePick extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const circleSize = 300.0;
+
     return homePick != null
-        ? GamePickButtonInvisiblePadding(
-            gamePickButton: GamePickButton(
-              key: homePick!.buttonKey,
-              pickImagePath: homePick!.iconPath,
-              gradientFirstColor: homePick!.gradientBorderFirstColor,
-              gradientSecondColor: homePick!.gradientBorderSecondColor,
-            ),
+        ? GamePickButton(
+            key: homePick!.buttonKey,
+            pickImagePath: homePick!.iconPath,
+            gradientFirstColor: homePick!.gradientBorderFirstColor,
+            gradientSecondColor: homePick!.gradientBorderSecondColor,
+            circleSize: circleSize,
           )
         : const GameEmptyPick();
   }
