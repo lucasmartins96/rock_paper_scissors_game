@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_mentor_rock_paper_scissors/home_page.dart';
+import 'package:frontend_mentor_rock_paper_scissors/game/game.dart';
 
 class FrontendMentorRockPaperScissorsApp extends StatelessWidget {
   const FrontendMentorRockPaperScissorsApp({super.key});
@@ -7,11 +7,13 @@ class FrontendMentorRockPaperScissorsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'RockPaperScissorsGame',
       theme: ThemeData(
+        fontFamily: 'Barlow Semi Condensed',
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(),
+      debugShowCheckedModeBanner: false,
+      home: const GamePage(),
     );
   }
 }
