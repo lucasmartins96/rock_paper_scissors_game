@@ -2,6 +2,8 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:frontend_mentor_rock_paper_scissors/game/game.dart';
+
 import 'package:frontend_mentor_rock_paper_scissors/score/score.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -19,7 +21,10 @@ void main() {
       MaterialApp(
         home: BlocProvider.value(
           value: scoreCubit,
-          child: const GameScore(),
+          child: const LayoutProvider(
+            isDesktop: true,
+            child: GameScore(),
+          ),
         ),
       ),
     );
