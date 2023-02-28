@@ -10,11 +10,9 @@ class GameEmptyPick extends StatefulWidget {
 }
 
 class _GameEmptyPickState extends State<GameEmptyPick> {
-  double circleSize = 310;
-
   @override
   Widget build(BuildContext context) {
-    _handleCircleSize();
+    final circleSize = _handleCircleSize();
 
     return GamePickButtonBase(
       containerBorderDecoration: const BoxDecoration(
@@ -29,21 +27,20 @@ class _GameEmptyPickState extends State<GameEmptyPick> {
     );
   }
 
-  void _handleCircleSize() {
+  double _handleCircleSize() {
     final width = MediaQuery.of(context).size.width;
+    var circleSize = 310.0;
 
-    if (width <= 1300 && circleSize == 310) {
-      setState(() {
-        circleSize = 260;
-      });
-    } else if (width <= 1200 && circleSize == 260) {
-      setState(() {
-        circleSize = 210;
-      });
-    } else if (width <= 1000 && circleSize == 210) {
-      setState(() {
-        circleSize = 160;
-      });
+    if (width > 1200 && width <= 1300) {
+      circleSize = 260;
+    } else if (width > 1000 && width <= 1200) {
+      circleSize = 210;
+    } else if (width > 800 && width <= 1000) {
+      circleSize = 160;
+    } else if (width <= 800) {
+      circleSize = 128;
     }
+
+    return circleSize;
   }
 }
