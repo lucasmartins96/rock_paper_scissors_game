@@ -40,19 +40,19 @@ Projeto desenvolvido como desafio de nível 4 (avançado) do Frontend Mentor.
 
 - Página inicial
 
-<img src="readme-assets/home-mobile.png" alt="home-mobile" style="zoom:50%;" />
+<img src="readme-assets/home-mobile.png" alt="home-mobile" style="zoom:33%;" />
 
 - Alerta de regras
 
-<img src="readme-assets/rules-mobile.png" alt="rules-mobile" style="zoom:50%;" />
+<img src="readme-assets/rules-mobile.png" alt="rules-mobile" style="zoom:33%;" />
 
 - Exibição das escolhas
 
-<img src="readme-assets/game-picks-mobile.png" alt="game-picks-mobile" style="zoom:50%;" />
+<img src="readme-assets/game-picks-mobile.png" alt="game-picks-mobile" style="zoom:33%;" />
 
 - Resultado
 
-<img src="readme-assets/result-mobile.png" alt="result-mobile" style="zoom:50%;" />
+<img src="readme-assets/result-mobile.png" alt="result-mobile" style="zoom:33%;" />
 
 
 
