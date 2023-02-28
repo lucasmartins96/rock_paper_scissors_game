@@ -8,12 +8,12 @@ Projeto desenvolvido como desafio de nível 4 (avançado) do Frontend Mentor.
 
 ## Tabela de Conteúdos
 
-   * [Demonstração Desktop](#Demonstração Desktop)
-   * [Demonstração mobile](#Demonstração Mobile)
-   * [Pré Requisitos](#Pré Requisitos)
-   * [Como executar a aplicação](#Como executar a aplicação)
-   * [Executando os testes](#Executando os testes)
-   * [Tecnologias utilizadas](#Tecnologias utilizadas)
+   * [Demonstração Desktop](#Demonstração-Desktop)
+   * [Demonstração mobile](#Demonstração-Mobile)
+   * [Pré Requisitos](#Pré-Requisitos)
+      * [Como executar a aplicação](#Como-executar-a-aplicação)
+      * [Executando os testes](#Executando-os-testes)
+   * [Tecnologias utilizadas](#Tecnologias-utilizadas)
    * [Autor](#Autor)
 
 ## Demonstração Desktop
@@ -40,19 +40,19 @@ Projeto desenvolvido como desafio de nível 4 (avançado) do Frontend Mentor.
 
 - Página inicial
 
-<img src="/home/lmartins96/Documentos/my-code-repositories/flutter/frontend-mentor/frontend_mentor_rock_paper_scissors/readme-assets/home-mobile.png" alt="home-mobile" style="zoom:50%;" />
+<img src="readme-assets/home-mobile.png" alt="home-mobile" style="zoom:50%;" />
 
 - Alerta de regras
 
-<img src="/home/lmartins96/Documentos/my-code-repositories/flutter/frontend-mentor/frontend_mentor_rock_paper_scissors/readme-assets/rules-mobile.png" alt="rules-mobile" style="zoom:50%;" />
+<img src="readme-assets/rules-mobile.png" alt="rules-mobile" style="zoom:50%;" />
 
 - Exibição das escolhas
 
-<img src="/home/lmartins96/Documentos/my-code-repositories/flutter/frontend-mentor/frontend_mentor_rock_paper_scissors/readme-assets/game-picks-mobile.png" alt="game-picks-mobile" style="zoom:50%;" />
+<img src="readme-assets/game-picks-mobile.png" alt="game-picks-mobile" style="zoom:50%;" />
 
 - Resultado
 
-<img src="/home/lmartins96/Documentos/my-code-repositories/flutter/frontend-mentor/frontend_mentor_rock_paper_scissors/readme-assets/result-mobile.png" alt="result-mobile" style="zoom:50%;" />
+<img src="readme-assets/result-mobile.png" alt="result-mobile" style="zoom:50%;" />
 
 
 
