@@ -30,13 +30,13 @@ class _GamePickButtonDopplerBorderState
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    if (width <= 900 && lastDopplerTierPadding == 85) {
+    if (width > 801 && width <= 900) {
       setState(() {
         lastDopplerTierPadding = 65;
         secondDopplerTierPadding = 55;
         firstDopplerTierPadding = 55;
       });
-    } else if (width <= 800 && lastDopplerTierPadding == 65) {
+    } else if (width <= 800) {
       setState(() {
         lastDopplerTierPadding = 32;
         secondDopplerTierPadding = 28;

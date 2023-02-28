@@ -80,7 +80,10 @@ class _PlayersPicksBoardMobileState extends State<PlayersPicksBoardMobile>
               right: -50,
               child: Stack(
                 children: [
-                  _handleBuildHomeGamePickButton(homePick),
+                  if (state.homePick == null)
+                    _buildEmptyPick()
+                  else
+                    _handleBuildHomeGamePickButton(homePick),
                   Positioned(
                     right: 75,
                     bottom: 0,
@@ -148,6 +151,12 @@ class _PlayersPicksBoardMobileState extends State<PlayersPicksBoardMobile>
     );
   }
 
+  Widget _buildEmptyPick() {
+    return const GamePickButtonInvisiblePadding(
+      gamePickButton: GameEmptyPick(),
+    );
+  }
+
   void _handleStartAnimation(bool? isUserWin) {
     if (isUserWin != null) {
       _controller.forward();
@@ -195,7 +204,14 @@ class _PlayersPicksBoardMobileState extends State<PlayersPicksBoardMobile>
       return _buildPickButtonDopplerBorder(homePick);
     }
 
-    return HomePick(homePick: homePick);
+    return GamePickButtonInvisiblePadding(
+      gamePickButton: GamePickButton(
+        key: homePick!.buttonKey,
+        pickImagePath: homePick.iconPath,
+        gradientFirstColor: homePick.gradientBorderFirstColor,
+        gradientSecondColor: homePick.gradientBorderSecondColor,
+      ),
+    );
   }
 
   String _handleMessage() {
